@@ -9,12 +9,12 @@ class Ground
 private:
     RectangleShape* shapes[2];
     Texture* textures[2];
-    float velocity = 1;
 public:
     Ground();
     ~Ground();
-    void run(RenderWindow * window);
+    void run(int velocity);
     void draw(RenderWindow * window);
+    FloatRect getGlobalBounds();
 };
 
 #endif

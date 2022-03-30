@@ -34,7 +34,7 @@ Ground::~Ground()
     free(shapes[1]);
 }
 
-void Ground::run(RenderWindow* window)
+void Ground::run(int velocity)
 {
     IntRect last;
     
@@ -49,4 +49,9 @@ void Ground::draw(RenderWindow* window)
 {
     window->draw(*shapes[0]);
     window->draw(*shapes[1]);
+}
+
+FloatRect Ground::getGlobalBounds()
+{
+    return shapes[0]->getGlobalBounds();
 }

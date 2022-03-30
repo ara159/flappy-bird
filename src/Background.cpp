@@ -17,7 +17,7 @@ Background::~Background() {
     free(txBackground);
 }
 
-void Background::run(RenderWindow* window)
+void Background::run(int velocity)
 {
     if (--cooldown > 0) return;
     cooldown = 5;

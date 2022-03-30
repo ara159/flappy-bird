@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include "Background.hpp"
 #include "Ground.hpp"
+#include "Tube.hpp"
 #include <vector>
 
 using namespace sf;
@@ -14,6 +15,10 @@ private:
     Player player;
     Background background;
     Ground ground;
+    std::vector<Tube*> tubes;
+    int bgVelocityFactor;
+    int gameOverCooldown;
+    bool gameOver;
 public:
     FlapBird();
     ~FlapBird();

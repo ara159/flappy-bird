@@ -9,12 +9,11 @@ class Background
 private:
     Texture* txBackground;
     Sprite* spBackground;
-    float velocity = 1;
     int cooldown = 0;
 public:
     Background();
     ~Background();
-    void run(RenderWindow * window);
+    void run(int velocity);
     void draw(RenderWindow * window);
 };
 

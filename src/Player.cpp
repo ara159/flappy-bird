@@ -9,8 +9,7 @@ Player::Player()
     
     spPlayer = new Sprite(*txPlayer);
     spPlayer->setOrigin(Vector2f(txPlayer->getSize().x/2, txPlayer->getSize().y/2));
-    spPlayer->setPosition(60, 30);
-    velocity = Vector2f(0, 0);
+    start();
 }
 
 Player::~Player() {
@@ -25,14 +24,12 @@ void Player::draw(RenderWindow* window)
 
 void Player::update()
 {
+    if (collGround) { return; }
+
     spPlayer->move(velocity);
+
     auto angle = spPlayer->getRotation();
     
-    if (spPlayer->getPosition().y > 256 - spPlayer->getLocalBounds().height)
-    {
-        velocity.y = 0;
-        return;
-    }
     if (velocity.y < 8)
     {
         velocity.y += 0.15;
@@ -45,10 +42,32 @@ void Player::update()
 
 void Player::onMouseButtonPressed()
 {
-    velocity.y = -5;
+    if (collGround || collTube) { return; }
+    
+    velocity.y = -4;
     spPlayer->setRotation(-45);
 }
 
-std::string Player::getName() { return "player"; }
+FloatRect Player::getGlobalBounds()
+{
+    return spPlayer->getGlobalBounds();
+}
 
-void Player::onCollision() {}
+void Player::collideWithGround()
+{
+    collGround = true;
+}
+
+void Player::collideWithTube()
+{
+    collTube = true;
+}
+
+void Player::start()
+{
+    spPlayer->setPosition(60, 30);
+    spPlayer->setRotation(0);
+    velocity = Vector2f(0, 0);
+    collGround = false;
+    collTube = false;
+}

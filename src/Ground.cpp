@@ -11,12 +11,12 @@ Ground::Ground(float scale) : MyGameObject(scale)
 }
 
 void Ground::init() {
-    shapes[0] = new RectangleShape(Vector2f(screenSize.x, 8 * scale));
-    shapes[1] = new RectangleShape(Vector2f(screenSize.x, 16 * scale));
-
     Image tileset = Image();
     tileset.loadFromFile("tiles.png");
     
+    shapes[0] = new RectangleShape(Vector2f(screenSize.x, 8 * scale));
+    shapes[1] = new RectangleShape(Vector2f(screenSize.x, 16 * scale));
+
     textures[0] = new Texture();
     textures[0]->loadFromImage(tileset, IntRect(536, 64, 16, 8));
     textures[0]->setRepeated(true);
@@ -41,10 +41,11 @@ void Ground::init() {
 
 Ground::~Ground()
 {
-    free(textures[0]);
-    free(textures[1]);
-    free(shapes[0]);
-    free(shapes[1]);
+    for (int i = 0; i < 2; i++)
+    {
+        free(textures[i]);
+        free(shapes[i]);
+    }
 }
 
 void Ground::run(int velocity)
@@ -60,8 +61,8 @@ void Ground::run(int velocity)
 
 void Ground::draw(RenderWindow* window)
 {
-    window->draw(*shapes[0]);
-    window->draw(*shapes[1]);
+    for (int i = 0; i < 2; i++)
+        window->draw(*shapes[i]);
 }
 
 FloatRect Ground::getGlobalBounds()

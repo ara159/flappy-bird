@@ -15,12 +15,18 @@ FlapBird::~FlapBird()
     free(player);
     free(background);
     free(ground);
+    for (auto tube : tubes)
+    {
+        free(tube);
+    }
 }
 
 void FlapBird::init() {
     player = new Player(scale);
     ground = new Ground(scale);
     background = new Background(scale);
+    font = new Font();
+    font->loadFromFile("FlappyBirdy.ttf");
 }
 
 void FlapBird::start()
@@ -28,22 +34,48 @@ void FlapBird::start()
     bgVelocityFactor = 1;
     gameOverCooldown = 60 * 3;
     gameOver = false;
+    tubeParams = FlapBird::TubeCreationParams{0, 60 * 2, 60, 1};
+    player->start();
+    for (auto tube : tubes) free(tube);    
     tubes.clear();
-    tubes.push_back(new Tube(scale));
 }
 
 void FlapBird::run(RenderWindow * window)
 {
     if (gameOver) {
-        if(--gameOverCooldown == 0)
-        {
-            start();
-            player->start();
-        }
+        if(--gameOverCooldown == 0) start();
         return;
     }
+    
+    checkCollisions();
+    updateObjects();
+    clearInactiveTube();
 
+    if (tubeParams.cooldown-- == 0)
+    {
+        tubeParams.maxCooldown -= tubeParams.decay;
+        tubeParams.cooldown = tubeParams.maxCooldown;
+        int s1, s2;
+        s1 = rand() % 30;
+        s2 = rand() % 30;
+        tubes.push_back(new Tube(scale, false, 20 + s1));
+        tubes.push_back(new Tube(scale, true, 20 + s2));
+    }
+}
+
+void FlapBird::updateObjects()
+{
+    for (auto tube : tubes)
+    {
+        tube->update(bgVelocityFactor);
+    }
+    background->run(bgVelocityFactor);
+    ground->run(bgVelocityFactor);
     player->update();
+}
+
+void FlapBird::checkCollisions()
+{
     auto p = player->getGlobalBounds();
 
     for (auto tube : tubes)
@@ -62,14 +94,19 @@ void FlapBird::run(RenderWindow * window)
         bgVelocityFactor = 0;
         gameOver = true;
     }
+}
 
+void FlapBird::clearInactiveTube()
+{
+    auto filtered = std::vector<Tube*>();
     for (auto tube : tubes)
     {
-        tube->update(bgVelocityFactor);
+        if (tube->isActive())
+            filtered.push_back(tube);
+        else
+            free(tube);
     }
-
-    background->run(bgVelocityFactor);
-    ground->run(bgVelocityFactor);
+    tubes = filtered;
 }
 
 void FlapBird::draw(RenderWindow * window)
@@ -81,6 +118,17 @@ void FlapBird::draw(RenderWindow * window)
     
     player->draw(window);
     ground->draw(window);
+
+    Text text;
+    text.setFont(*font);
+    text.setString(std::to_string(points));
+    text.setCharacterSize(20 * scale);
+    text.setPosition(screenSize.x * 1/2, screenSize.y * 1/10);
+    text.setOrigin(Vector2f(text.getGlobalBounds().width/2, text.getGlobalBounds().height/2));
+    text.setFillColor(Color::White);
+    text.setOutlineColor(Color::Black);
+    text.setOutlineThickness(1);
+    window->draw(text);
 }
 
 void FlapBird::eventHandler(RenderWindow * window)

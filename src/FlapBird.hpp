@@ -13,14 +13,27 @@ using namespace sf;
 class FlapBird : public MyGameObject
 {
 private:
+    struct TubeCreationParams
+    {
+        int cooldown;
+        int maxCooldown;
+        int minCooldown;
+        int decay;
+    };
+    Font* font;
     Player* player;
     Background* background;
     Ground* ground;
     std::vector<Tube*> tubes;
     int bgVelocityFactor;
     int gameOverCooldown;
+    FlapBird::TubeCreationParams tubeParams;
     bool gameOver;
+    int points = 0;
     void init();
+    void clearInactiveTube();
+    void checkCollisions();
+    void updateObjects();
 public:
     FlapBird();
     FlapBird(float scale);

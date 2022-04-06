@@ -15,10 +15,11 @@ private:
     RectangleShape* collRect;
     bool collGround = false;
     bool collTube = false;
-    void init();
     float maxVelocity = 8;
     float gravity = 0.15;
-    float impulse = -4;
+    float impulse = -3;
+    Vector2i initialOffset;
+    void init();
 public:
     Player();
     Player(float scale);

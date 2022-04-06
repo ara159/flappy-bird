@@ -34,18 +34,14 @@ void Player::init() {
     maxVelocity *= scale;
     gravity *= scale;
     impulse *= scale;
-
-    // debug
-    collRect->setFillColor(Color{0,0,0,0});
-    collRect->setOutlineColor(Color::Green);
-    collRect->setOutlineThickness(1);
+    initialOffset.x = screenSize.x * 1/4;
+    initialOffset.y = screenSize.y * 1/5;
     start();
 }
 
 void Player::draw(RenderWindow* window)
 {
     window->draw(*spPlayer);
-    window->draw(*collRect);
 }
 
 void Player::update()
@@ -93,7 +89,8 @@ void Player::collideWithTube()
 
 void Player::start()
 {
-    spPlayer->setPosition(60, 30);
+    spPlayer->setPosition(initialOffset.x, initialOffset.y);
+    collRect->setPosition(spPlayer->getPosition());
     spPlayer->setRotation(0);
     velocity = Vector2f(0, 0);
     collGround = false;

@@ -21,7 +21,7 @@ Game::~Game()
 
 void Game::start()
 {
-    window = new RenderWindow(VideoMode(256 * scale, 224 * scale), "Flap Bird");
+    window = new RenderWindow(VideoMode(screenSize.x, screenSize.y), "Flap Bird");
     window->setVerticalSyncEnabled(true);
     window->setFramerateLimit(60);
     flapBird->start();

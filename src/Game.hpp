@@ -2,18 +2,21 @@
 #define GAME_H 1
 #include <SFML/Graphics.hpp>
 #include "FlapBird.hpp"
+#include "MyGameObject.hpp"
 
 using namespace sf;
 
-class Game
+class Game : public MyGameObject
 {
 private:
     RenderWindow * window;
     void run();
     void draw();
-    FlapBird flapBird;
+    FlapBird* flapBird;
+    void init();
 public:
     Game();
+    Game(float scale);
     ~Game();
     void start();
 };

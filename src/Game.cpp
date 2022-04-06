@@ -1,19 +1,30 @@
 #include "Game.hpp"
 
-Game::Game()
+Game::Game() : MyGameObject()
 {
+    init();
+}
+
+Game::Game(float scale) : MyGameObject(scale)
+{
+    init();
+}
+
+void Game::init() {
+    flapBird = new FlapBird(scale);
 }
 
 Game::~Game()
 {
+    free(flapBird);
 }
 
 void Game::start()
 {
-    window = new RenderWindow(VideoMode(256, 224), "Flap Bird");
+    window = new RenderWindow(VideoMode(256 * scale, 224 * scale), "Flap Bird");
     window->setVerticalSyncEnabled(true);
     window->setFramerateLimit(60);
-    flapBird.start();
+    flapBird->start();
     run();
 }
 
@@ -22,14 +33,14 @@ void Game::run()
     while (window->isOpen())
     {
         draw();
-        flapBird.eventHandler(window);
-        flapBird.run(window);
+        flapBird->eventHandler(window);
+        flapBird->run(window);
     }
 }
 
 void Game::draw()
 {
     window->clear(Color{52, 119, 235});
-    flapBird.draw(window);
+    flapBird->draw(window);
     window->display();
 }

@@ -6,21 +6,24 @@
 #include "Ground.hpp"
 #include "Tube.hpp"
 #include <vector>
+#include "MyGameObject.hpp"
 
 using namespace sf;
 
-class FlapBird
+class FlapBird : public MyGameObject
 {
 private:
-    Player player;
-    Background background;
-    Ground ground;
+    Player* player;
+    Background* background;
+    Ground* ground;
     std::vector<Tube*> tubes;
     int bgVelocityFactor;
     int gameOverCooldown;
     bool gameOver;
+    void init();
 public:
     FlapBird();
+    FlapBird(float scale);
     ~FlapBird();
     void start();
     void run(RenderWindow * window);

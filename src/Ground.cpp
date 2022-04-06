@@ -1,9 +1,18 @@
 #include "Ground.hpp"
 
-Ground::Ground()
+Ground::Ground() : MyGameObject()
 {
-    shapes[0] = new RectangleShape(Vector2f(256, 8));
-    shapes[1] = new RectangleShape(Vector2f(256, 16));
+    init();
+}
+
+Ground::Ground(float scale) : MyGameObject(scale)
+{
+    init();
+}
+
+void Ground::init() {
+    shapes[0] = new RectangleShape(Vector2f(screenSize.x, 8 * scale));
+    shapes[1] = new RectangleShape(Vector2f(screenSize.x, 16 * scale));
 
     Image tileset = Image();
     tileset.loadFromFile("tiles.png");
@@ -19,11 +28,15 @@ Ground::Ground()
     shapes[0]->setTexture(textures[0]);
     shapes[1]->setTexture(textures[1]);
     
-    shapes[0]->setPosition(0, 224 - 16 - 8);
-    shapes[1]->setPosition(0, 224 - 16);
+    shapes[0]->setPosition(0, screenSize.y - 16 * scale - 8 * scale);
+    shapes[1]->setPosition(0, screenSize.y - 16 * scale);
     
-    shapes[0]->setTextureRect(IntRect(0, 0, 256, 8));
-    shapes[1]->setTextureRect(IntRect(0, 0, 256, 16));
+    shapes[0]->setTextureRect(IntRect(0, 0, screenSize.x, 8 * scale));
+    shapes[1]->setTextureRect(IntRect(0, 0, screenSize.x, 16 * scale));
+
+    shapes[0]->setScale(sf::Vector2f(scale, scale));
+    shapes[1]->setScale(sf::Vector2f(scale, scale));
+
 }
 
 Ground::~Ground()
@@ -39,10 +52,10 @@ void Ground::run(int velocity)
     IntRect last;
     
     last = shapes[0]->getTextureRect();
-    shapes[0]->setTextureRect(IntRect(last.left + velocity, 0, 256, 8));
+    shapes[0]->setTextureRect(IntRect(last.left + velocity, 0, screenSize.x, 8 * scale));
     
     last = shapes[1]->getTextureRect();
-    shapes[1]->setTextureRect(IntRect(last.left + velocity, 0, 256, 16));
+    shapes[1]->setTextureRect(IntRect(last.left + velocity, 0, screenSize.x, 16 * scale));
 }
 
 void Ground::draw(RenderWindow* window)

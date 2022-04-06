@@ -2,5 +2,5 @@
 
 int main(int argc, char const *argv[])
 {
-    Game().start();
+    Game(3).start();
 }

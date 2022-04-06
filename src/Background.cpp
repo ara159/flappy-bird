@@ -1,6 +1,14 @@
 #include "Background.hpp"
 
-Background::Background() {
+Background::Background() : MyGameObject() {
+    init();
+}
+
+Background::Background(float scale) : MyGameObject(scale) {
+    init();
+}
+
+void Background::init() {
     Image tileset = Image();
     tileset.loadFromFile("bg.png");
     
@@ -9,7 +17,8 @@ Background::Background() {
     txBackground->setRepeated(true);
 
     spBackground = new Sprite(*txBackground);
-    spBackground->setPosition(0, -200);
+    spBackground->setScale(sf::Vector2f(scale, scale));
+    spBackground->setPosition(0, -spBackground->getGlobalBounds().height/2);
 }
 
 Background::~Background() {
@@ -19,11 +28,11 @@ Background::~Background() {
 
 void Background::run(int velocity)
 {
-    if (--cooldown > 0) return;
-    cooldown = 5;
+    if (--cooldown > 0 || velocity == 0) return;
+    cooldown = 6 / scale;
 
     auto last = spBackground->getTextureRect();
-    spBackground->setTextureRect(IntRect(last.left + velocity, 0, 512, 432));
+    spBackground->setTextureRect(IntRect(last.left + 1, 0, 512 * scale, 432 * scale));
 }
 
 void Background::draw(RenderWindow* window)

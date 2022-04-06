@@ -1,7 +1,16 @@
 #include "Tube.hpp"
 
-Tube::Tube()
+Tube::Tube() : MyGameObject()
 {
+    init();
+}
+
+Tube::Tube(float scale) : MyGameObject(scale)
+{
+    init();
+}
+
+void Tube::init() {
     Image tileset = Image();
     tileset.loadFromFile("tubular.png");
     
@@ -9,7 +18,8 @@ Tube::Tube()
     txTube->loadFromImage(tileset, IntRect(256, 336, 32, 96));
     
     spTube = new Sprite(*txTube);
-    spTube->setPosition(300, 224 - 96);
+    spTube->setPosition(screenSize.x + 100, screenSize.y - 96 * scale);
+    spTube->setScale(sf::Vector2f(scale, scale));
 }
 
 Tube::~Tube()
@@ -25,10 +35,10 @@ void Tube::draw(RenderWindow* window)
 
 void Tube::update(float velocity)
 {
-    spTube->move(-velocity, 0);
-    if (spTube->getPosition().x < -40)
+    spTube->move(-velocity * scale, 0);
+    if (spTube->getPosition().x < -100)
     {
-        spTube->setPosition(300, spTube->getPosition().y);
+        spTube->setPosition(screenSize.x + 100, spTube->getPosition().y);
     }
 }
 

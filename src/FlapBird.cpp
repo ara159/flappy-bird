@@ -1,11 +1,26 @@
 #include "FlapBird.hpp"
 
-FlapBird::FlapBird()
+FlapBird::FlapBird() : MyGameObject()
 {
+    init();
+}
+
+FlapBird::FlapBird(float scale) : MyGameObject(scale)
+{
+    init();
 }
 
 FlapBird::~FlapBird()
 {
+    free(player);
+    free(background);
+    free(ground);
+}
+
+void FlapBird::init() {
+    player = new Player(scale);
+    ground = new Ground(scale);
+    background = new Background(scale);
 }
 
 void FlapBird::start()
@@ -14,7 +29,7 @@ void FlapBird::start()
     gameOverCooldown = 60 * 3;
     gameOver = false;
     tubes.clear();
-    tubes.push_back(new Tube());
+    tubes.push_back(new Tube(scale));
 }
 
 void FlapBird::run(RenderWindow * window)
@@ -23,27 +38,27 @@ void FlapBird::run(RenderWindow * window)
         if(--gameOverCooldown == 0)
         {
             start();
-            player.start();
+            player->start();
         }
         return;
     }
 
-    player.update();
-    auto p = player.getGlobalBounds();
+    player->update();
+    auto p = player->getGlobalBounds();
 
     for (auto tube : tubes)
     {
         if (p.intersects(tube->getGlobalBounds()))
         {
             bgVelocityFactor = 0;
-            player.collideWithTube();
+            player->collideWithTube();
             break;
         }
     }
 
-    if (p.intersects(ground.getGlobalBounds()))
+    if (p.intersects(ground->getGlobalBounds()))
     {
-        player.collideWithGround();
+        player->collideWithGround();
         bgVelocityFactor = 0;
         gameOver = true;
     }
@@ -53,19 +68,19 @@ void FlapBird::run(RenderWindow * window)
         tube->update(bgVelocityFactor);
     }
 
-    background.run(bgVelocityFactor);
-    ground.run(bgVelocityFactor);
+    background->run(bgVelocityFactor);
+    ground->run(bgVelocityFactor);
 }
 
 void FlapBird::draw(RenderWindow * window)
 {   
-    background.draw(window);
+    background->draw(window);
     
     for (auto tube : tubes)
         tube->draw(window);
     
-    player.draw(window);
-    ground.draw(window);
+    player->draw(window);
+    ground->draw(window);
 }
 
 void FlapBird::eventHandler(RenderWindow * window)
@@ -80,7 +95,7 @@ void FlapBird::eventHandler(RenderWindow * window)
         }
         if (event.type == Event::MouseButtonPressed)
         {
-            player.onMouseButtonPressed();
+            player->onMouseButtonPressed();
         }
     }
 }

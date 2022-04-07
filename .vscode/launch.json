@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Gravity - Debug",
+            "name": "FlappyBirdy - Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/gravity.out",
+            "program": "${workspaceRoot}/FlappyBirdy.out",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

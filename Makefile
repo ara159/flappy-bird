@@ -1,8 +1,8 @@
-build: clean gravity.out
-	# Build Complete ./gravity.out!
+build: clean FlappyBirdy.out
+	# Build Complete ./FlappyBirdy.out!
 
-gravity.out:
-	g++ -g $(wildcard src/*.cpp) -o gravity.out -lsfml-graphics -lsfml-window -lsfml-system
+FlappyBirdy.out:
+	g++ -g $(wildcard src/*.cpp) -o FlappyBirdy.out -lsfml-graphics -lsfml-window -lsfml-system
 
 clean:
-	rm -f gravity.out gravity.out
+	rm -f FlappyBirdy.out FlappyBirdy.out

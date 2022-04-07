@@ -38,6 +38,8 @@ void FlapBird::start()
     player->start();
     for (auto tube : tubes) free(tube);    
     tubes.clear();
+    for (auto checkpoint : checkpoints) free(checkpoint);    
+    checkpoints.clear();
 }
 
 void FlapBird::run(RenderWindow * window)
@@ -60,6 +62,7 @@ void FlapBird::run(RenderWindow * window)
         s2 = rand() % 30;
         tubes.push_back(new Tube(scale, false, 20 + s1));
         tubes.push_back(new Tube(scale, true, 20 + s2));
+        checkpoints.push_back(new Checkpoint(scale));
     }
 }
 
@@ -68,6 +71,10 @@ void FlapBird::updateObjects()
     for (auto tube : tubes)
     {
         tube->update(bgVelocityFactor);
+    }
+    for (auto checkpoint : checkpoints)
+    {
+        checkpoint->update(bgVelocityFactor);
     }
     background->run(bgVelocityFactor);
     ground->run(bgVelocityFactor);
@@ -88,6 +95,15 @@ void FlapBird::checkCollisions()
         }
     }
 
+    for (auto checkpoint : checkpoints)
+    {
+        if (p.intersects(checkpoint->getGlobalBounds()))
+        {
+            points += 1;
+            checkpoint->collideWithPlayer();
+        }
+    }
+
     if (p.intersects(ground->getGlobalBounds()))
     {
         player->collideWithGround();
@@ -98,15 +114,25 @@ void FlapBird::checkCollisions()
 
 void FlapBird::clearInactiveTube()
 {
-    auto filtered = std::vector<Tube*>();
+    auto nTubes = std::vector<Tube*>();
     for (auto tube : tubes)
     {
         if (tube->isActive())
-            filtered.push_back(tube);
+            nTubes.push_back(tube);
         else
             free(tube);
     }
-    tubes = filtered;
+    tubes = nTubes;
+    
+    auto nCheckpoints = std::vector<Checkpoint*>();
+    for (auto checkpoint : checkpoints)
+    {
+        if (checkpoint->isActive())
+            nCheckpoints.push_back(checkpoint);
+        else
+            free(checkpoint);
+    }
+    checkpoints = nCheckpoints;
 }
 
 void FlapBird::draw(RenderWindow * window)
@@ -114,8 +140,13 @@ void FlapBird::draw(RenderWindow * window)
     background->draw(window);
     
     for (auto tube : tubes)
+    {
         tube->draw(window);
-    
+    }
+    for (auto checkpoint : checkpoints)
+    {
+        checkpoint->draw(window);
+    }
     player->draw(window);
     ground->draw(window);
 

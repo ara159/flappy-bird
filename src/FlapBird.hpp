@@ -7,6 +7,7 @@
 #include "Tube.hpp"
 #include <vector>
 #include "MyGameObject.hpp"
+#include "Checkpoint.hpp"
 
 using namespace sf;
 
@@ -25,6 +26,7 @@ private:
     Background* background;
     Ground* ground;
     std::vector<Tube*> tubes;
+    std::vector<Checkpoint*> checkpoints;
     int bgVelocityFactor;
     int gameOverCooldown;
     FlapBird::TubeCreationParams tubeParams;

@@ -8,25 +8,35 @@ Tube::Tube() : MyGameObject()
 Tube::Tube(float scale, bool upsidedown, int closest) : MyGameObject(scale)
 {
     this->upsidedown = upsidedown;
-    this->closest = closest;
+    this->closest = closest * scale;
     init();
 }
 
 void Tube::init() {
     Image tileset = Image();
-    tileset.loadFromFile("tubular.png");
+    tileset.loadFromFile("flappy-birdy-sprites.png");
     
     txTube = new Texture();
-    txTube->loadFromImage(tileset, IntRect(256, 336, 32, 96));
-    
+
+    if (!upsidedown)
+        txTube->loadFromImage(tileset, IntRect(0, 323, 26, 160));
+    else
+        txTube->loadFromImage(tileset, IntRect(28, 323, 26, 160));
+
     spTube = new Sprite(*txTube);
-    spTube->setPosition(screenSize.x + 100, screenSize.y - 96 * scale - 16 * scale - 8 * scale + closest * scale);
     spTube->setScale(sf::Vector2f(scale, scale));
 
-    if (upsidedown)
+    int min = 45 * scale;
+
+    if (!upsidedown)
     {
-        spTube->rotate(180);
-        spTube->setPosition(screenSize.x + 100 + 32 * scale, 96 * scale - closest * scale);
+        spTube->setOrigin(sf::Vector2f(txTube->getSize().x/2, 0));
+        spTube->setPosition(screenSize.x + 100, screenSize.y/2 + closest + min/2);
+    }
+    else
+    {
+        spTube->setOrigin(sf::Vector2f(txTube->getSize().x/2, txTube->getSize().y));
+        spTube->setPosition(screenSize.x + 100, screenSize.y/2 - closest - min/2);
     }
 }
 

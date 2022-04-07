@@ -53,15 +53,13 @@ void FlapBird::run(RenderWindow * window)
     updateObjects();
     clearInactiveTube();
 
+    int range = 30;
     if (tubeParams.cooldown-- == 0)
     {
         tubeParams.maxCooldown -= tubeParams.decay;
         tubeParams.cooldown = tubeParams.maxCooldown;
-        int s1, s2;
-        s1 = rand() % 30;
-        s2 = rand() % 30;
-        tubes.push_back(new Tube(scale, false, 20 + s1));
-        tubes.push_back(new Tube(scale, true, 20 + s2));
+        tubes.push_back(new Tube(scale, false, rand() % range));
+        tubes.push_back(new Tube(scale, true, rand() % range));
         checkpoints.push_back(new Checkpoint(scale));
     }
 }
@@ -147,8 +145,8 @@ void FlapBird::draw(RenderWindow * window)
     {
         checkpoint->draw(window);
     }
-    player->draw(window);
     ground->draw(window);
+    player->draw(window);
 
     Text text;
     text.setFont(*font);

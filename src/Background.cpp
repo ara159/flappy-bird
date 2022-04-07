@@ -10,15 +10,15 @@ Background::Background(float scale) : MyGameObject(scale) {
 
 void Background::init() {
     Image tileset = Image();
-    tileset.loadFromFile("bg.png");
+    tileset.loadFromFile("flappy-birdy-sprites.png");
     
     txBackground = new Texture();
-    txBackground->loadFromImage(tileset, IntRect(1546, 894, 512, 432));
+    txBackground->loadFromImage(tileset, IntRect(0, 0, 144, 256));
     txBackground->setRepeated(true);
 
     spBackground = new Sprite(*txBackground);
     spBackground->setScale(sf::Vector2f(scale, scale));
-    spBackground->setPosition(0, -spBackground->getGlobalBounds().height/2);
+    spBackground->setPosition(0, 0);
 }
 
 Background::~Background() {

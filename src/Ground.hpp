@@ -8,8 +8,8 @@ using namespace sf;
 class Ground : public MyGameObject
 {
 private:
-    RectangleShape* shapes[2];
-    Texture* textures[2];
+    Texture* txGround;
+    Sprite* spGround;
     void init();
 public:
     Ground();

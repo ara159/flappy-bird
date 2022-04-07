@@ -14,28 +14,37 @@ Player::Player(float scale) : MyGameObject(scale)
 
 Player::~Player() {
     free(spPlayer);
-    free(txPlayer);
-    free(collRect);
+
+    for (int i = 0; i < 3; i++)
+    {
+        free(txPlayer[i]);
+    }
 }
 
 void Player::init() {
-    txPlayer = new Texture();
-    txPlayer->loadFromFile("sprite.png");
-    
-    spPlayer = new Sprite(*txPlayer);
-    spPlayer->setOrigin(Vector2f(txPlayer->getSize().x/2, txPlayer->getSize().y/2));
-    spPlayer->setScale(sf::Vector2f(scale, scale));
+    Image tileset = Image();
+    tileset.loadFromFile("flappy-birdy-sprites.png");
 
-    auto collSize = Vector2f(15, 10);
-    collRect = new RectangleShape(collSize);
-    collRect->setOrigin(collSize.x/2, collSize.y/2);
-    collRect->setScale(sf::Vector2f(scale, scale));
+    for (int i = 0; i < 3; i++)
+    {
+        txPlayer[i] = new Texture();
+    }
+    
+    txPlayer[0]->loadFromImage(tileset, IntRect(3, 491, 17, 12));
+    txPlayer[1]->loadFromImage(tileset, IntRect(31, 491, 17, 12));
+    txPlayer[2]->loadFromImage(tileset, IntRect(59, 491, 17, 12));
+    
+    spPlayer = new Sprite(*txPlayer[1]);
+    auto s = spPlayer->getGlobalBounds();
+    spPlayer->setOrigin(Vector2f(s.width/2, s.height/2));
+    spPlayer->setScale(sf::Vector2f(scale, scale));
 
     maxVelocity *= scale;
     gravity *= scale;
     impulse *= scale;
     initialOffset.x = screenSize.x * 1/4;
     initialOffset.y = screenSize.y * 1/5;
+
     start();
 }
 
@@ -46,8 +55,6 @@ void Player::draw(RenderWindow* window)
 
 void Player::update()
 {
-    collRect->setPosition(spPlayer->getPosition());
-
     if (collGround) { return; }
 
     spPlayer->move(velocity);
@@ -62,6 +69,12 @@ void Player::update()
     {
         spPlayer->rotate(1.50);
     }
+    if (animationCooldown-- == 0)
+    {
+        animationCooldown = animationCooldownMax;
+        currentTx = (currentTx + 1) % 3;
+        spPlayer->setTexture(*txPlayer[currentTx]);
+    }
 }
 
 void Player::onMouseButtonPressed()
@@ -74,7 +87,7 @@ void Player::onMouseButtonPressed()
 
 FloatRect Player::getGlobalBounds()
 {
-    return collRect->getGlobalBounds();
+    return spPlayer->getGlobalBounds();
 }
 
 void Player::collideWithGround()
@@ -90,9 +103,9 @@ void Player::collideWithTube()
 void Player::start()
 {
     spPlayer->setPosition(initialOffset.x, initialOffset.y);
-    collRect->setPosition(spPlayer->getPosition());
     spPlayer->setRotation(0);
     velocity = Vector2f(0, 0);
     collGround = false;
     collTube = false;
+    animationCooldown = animationCooldownMax;
 }

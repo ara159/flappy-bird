@@ -3,14 +3,14 @@
 MyGameObject::MyGameObject(float scale)
 {
     if (scale > 0) this->scale = scale;
-    screenSize.x = 224 * 2/3 * scale;
-    screenSize.y = 224 * scale;
+    screenSize.x = 144 * scale;
+    screenSize.y = 256 * scale;
 }
 
 MyGameObject::MyGameObject()
 {
-    screenSize.x = 224 * 2/3 * scale;
-    screenSize.y = 224 * scale;
+    screenSize.x = 144 * scale;
+    screenSize.y = 256 * scale;
 }
 
 MyGameObject::~MyGameObject()

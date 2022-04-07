@@ -9,10 +9,12 @@ using namespace sf;
 class Player : public MyGameObject
 {
 private:
-    Texture* txPlayer;
+    Texture* txPlayer[3];
     Sprite* spPlayer;
     Vector2f velocity;
-    RectangleShape* collRect;
+    int animationCooldown = 0;
+    const int animationCooldownMax = 30;
+    int currentTx = 0;
     bool collGround = false;
     bool collTube = false;
     float maxVelocity = 8;

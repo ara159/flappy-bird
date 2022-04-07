@@ -13,7 +13,7 @@ Checkpoint::~Checkpoint()
 void Checkpoint::init()
 {
     collRect = new RectangleShape(Vector2f(1, screenSize.y));
-    collRect->setPosition(screenSize.x + 100 + 32/2 * scale, 0);
+    collRect->setPosition(screenSize.x + 100 + 26/2 * scale, 0);
 }
 
 void Checkpoint::update(float velocity)

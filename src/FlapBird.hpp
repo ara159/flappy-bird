@@ -8,6 +8,7 @@
 #include <vector>
 #include "MyGameObject.hpp"
 #include "Checkpoint.hpp"
+#include "DisplayPoints.hpp"
 
 using namespace sf;
 
@@ -25,13 +26,14 @@ private:
     Player* player;
     Background* background;
     Ground* ground;
+    DisplayPoints* points;
     std::vector<Tube*> tubes;
     std::vector<Checkpoint*> checkpoints;
-    int bgVelocityFactor;
+    int velocity;
     int gameOverCooldown;
+    const int gameOverCooldownMax = 180;
     FlapBird::TubeCreationParams tubeParams;
     bool gameOver;
-    int points = 0;
     void init();
     void clearInactiveTube();
     void checkCollisions();

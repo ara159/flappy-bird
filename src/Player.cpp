@@ -25,31 +25,43 @@ void Player::init() {
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 9; i++)
     {
         txPlayer[i] = new Texture();
     }
-    
+
+    // skin 1
     txPlayer[0]->loadFromImage(tileset, IntRect(3, 491, 17, 12));
     txPlayer[1]->loadFromImage(tileset, IntRect(31, 491, 17, 12));
     txPlayer[2]->loadFromImage(tileset, IntRect(59, 491, 17, 12));
-    
-    spPlayer = new Sprite(*txPlayer[1]);
-    auto s = spPlayer->getGlobalBounds();
-    spPlayer->setOrigin(Vector2f(s.width/2, s.height/2));
-    spPlayer->setScale(sf::Vector2f(scale, scale));
+
+    // skin 2
+    txPlayer[3]->loadFromImage(tileset, IntRect(87, 491, 17, 12));
+    txPlayer[4]->loadFromImage(tileset, IntRect(115, 329, 17, 12));
+    txPlayer[5]->loadFromImage(tileset, IntRect(115, 355, 17, 12));
+
+    // skin 3
+    txPlayer[6]->loadFromImage(tileset, IntRect(115, 381, 17, 12));
+    txPlayer[7]->loadFromImage(tileset, IntRect(115, 407, 17, 12));
+    txPlayer[8]->loadFromImage(tileset, IntRect(115, 433, 17, 12));
+
+    spPlayer = new Sprite();
 
     maxVelocity *= scale;
     gravity *= scale;
     impulse *= scale;
     initialOffset.x = screenSize.x * 1/4;
     initialOffset.y = screenSize.y * 1/5;
-
-    start();
 }
 
 void Player::draw(RenderWindow* window)
 {
+    if (!collGround && animationCooldown-- == 0)
+    {
+        animationCooldown = animationCooldownMax;
+        currentTx = (currentTx + 1) % 3;
+        spPlayer->setTexture(*txPlayer[skin * 3 + currentTx]);
+    }
     window->draw(*spPlayer);
 }
 
@@ -68,12 +80,6 @@ void Player::update()
     if (angle > 270 || angle < 90)
     {
         spPlayer->rotate(1.50);
-    }
-    if (animationCooldown-- == 0)
-    {
-        animationCooldown = animationCooldownMax;
-        currentTx = (currentTx + 1) % 3;
-        spPlayer->setTexture(*txPlayer[currentTx]);
     }
 }
 
@@ -102,6 +108,12 @@ void Player::collideWithTube()
 
 void Player::start()
 {
+    auto s = Vector2i(17, 12);
+    skin = rand() % 3;
+    spPlayer->setTexture(*txPlayer[skin * 3 + 1]);
+    spPlayer->setOrigin(Vector2f(s.x/2, s.y/2));
+    spPlayer->setScale(sf::Vector2f(scale, scale));
+
     spPlayer->setPosition(initialOffset.x, initialOffset.y);
     spPlayer->setRotation(0);
     velocity = Vector2f(0, 0);

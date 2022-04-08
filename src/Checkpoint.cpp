@@ -13,7 +13,7 @@ Checkpoint::~Checkpoint()
 void Checkpoint::init()
 {
     collRect = new RectangleShape(Vector2f(1, screenSize.y));
-    collRect->setPosition(screenSize.x + 100 + 26/2 * scale, 0);
+    collRect->setPosition(screenSize.x + 100, 0);
 }
 
 void Checkpoint::update(float velocity)
@@ -26,8 +26,7 @@ void Checkpoint::update(float velocity)
 
 void Checkpoint::draw(RenderWindow* window)
 {
-    collRect->setOutlineColor(Color::Green);
-    collRect->setOutlineThickness(1);
+    collRect->setFillColor(Color::Green);
     window->draw(*collRect);
 }
 

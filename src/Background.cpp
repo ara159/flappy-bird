@@ -12,13 +12,22 @@ void Background::init() {
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
     
-    txBackground = new Texture();
-    txBackground->loadFromImage(tileset, IntRect(0, 0, 144, 256));
-    txBackground->setRepeated(true);
+    for (int i = 0; i < 2; i++)
+    {
+        txBackground[i] = new Texture();
+        txBackground[i]->setRepeated(true);
+    }
 
-    spBackground = new Sprite(*txBackground);
+    txBackground[0]->loadFromImage(tileset, IntRect(0, 0, 144, 256));
+    txBackground[1]->loadFromImage(tileset, IntRect(146, 0, 144, 256));
+
+    spBackground = new Sprite();
     spBackground->setScale(sf::Vector2f(scale, scale));
     spBackground->setPosition(0, 0);
+}
+
+void Background::start() {
+    spBackground->setTexture(*txBackground[rand() % 2]);
 }
 
 Background::~Background() {

@@ -25,17 +25,20 @@ void FlapBird::init() {
     player = new Player(scale);
     ground = new Ground(scale);
     background = new Background(scale);
+    points = new DisplayPoints(scale);
     font = new Font();
     font->loadFromFile("FlappyBirdy.ttf");
 }
 
 void FlapBird::start()
 {
-    bgVelocityFactor = 1;
-    gameOverCooldown = 60 * 3;
+    velocity = 1;
+    gameOverCooldown = gameOverCooldownMax;
     gameOver = false;
     tubeParams = FlapBird::TubeCreationParams{0, 60 * 2, 60, 1};
     player->start();
+    background->start();
+    points->start();
     for (auto tube : tubes) free(tube);    
     tubes.clear();
     for (auto checkpoint : checkpoints) free(checkpoint);    
@@ -68,14 +71,14 @@ void FlapBird::updateObjects()
 {
     for (auto tube : tubes)
     {
-        tube->update(bgVelocityFactor);
+        tube->update(velocity);
     }
     for (auto checkpoint : checkpoints)
     {
-        checkpoint->update(bgVelocityFactor);
+        checkpoint->update(velocity);
     }
-    background->run(bgVelocityFactor);
-    ground->run(bgVelocityFactor);
+    background->run(velocity);
+    ground->run(velocity);
     player->update();
 }
 
@@ -87,7 +90,7 @@ void FlapBird::checkCollisions()
     {
         if (p.intersects(tube->getGlobalBounds()))
         {
-            bgVelocityFactor = 0;
+            velocity = 0;
             player->collideWithTube();
             break;
         }
@@ -97,7 +100,7 @@ void FlapBird::checkCollisions()
     {
         if (p.intersects(checkpoint->getGlobalBounds()))
         {
-            points += 1;
+            points->update();
             checkpoint->collideWithPlayer();
         }
     }
@@ -105,7 +108,7 @@ void FlapBird::checkCollisions()
     if (p.intersects(ground->getGlobalBounds()))
     {
         player->collideWithGround();
-        bgVelocityFactor = 0;
+        velocity = 0;
         gameOver = true;
     }
 }
@@ -147,17 +150,7 @@ void FlapBird::draw(RenderWindow * window)
     }
     ground->draw(window);
     player->draw(window);
-
-    Text text;
-    text.setFont(*font);
-    text.setString(std::to_string(points));
-    text.setCharacterSize(20 * scale);
-    text.setPosition(screenSize.x * 1/2, screenSize.y * 1/10);
-    text.setOrigin(Vector2f(text.getGlobalBounds().width/2, text.getGlobalBounds().height/2));
-    text.setFillColor(Color::White);
-    text.setOutlineColor(Color::Black);
-    text.setOutlineThickness(1);
-    window->draw(text);
+    points->draw(window);
 }
 
 void FlapBird::eventHandler(RenderWindow * window)

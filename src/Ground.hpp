@@ -17,6 +17,7 @@ public:
     ~Ground();
     void run(int velocity);
     void draw(RenderWindow * window);
+    void start();
     FloatRect getGlobalBounds();
 };
 

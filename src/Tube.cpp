@@ -19,9 +19,9 @@ void Tube::init() {
     txTube = new Texture();
 
     if (!upsidedown)
-        txTube->loadFromImage(tileset, IntRect(0, 323, 26, 160));
+        txTube->loadFromImage(tileset, IntRect(84, 323, 26, 160));
     else
-        txTube->loadFromImage(tileset, IntRect(28, 323, 26, 160));
+        txTube->loadFromImage(tileset, IntRect(56, 323, 26, 160));
 
     spTube = new Sprite(*txTube);
     spTube->setScale(sf::Vector2f(scale, scale));

@@ -1,4 +1,5 @@
 #include "FlapBird.hpp"
+#include <iostream>
 
 FlapBird::FlapBird() : MyGameObject()
 {
@@ -41,6 +42,10 @@ void FlapBird::update(RenderWindow * window)
         if(--gameOverCooldown == 0) start();
         return;
     }
+    
+    if (status.paused)
+        return;
+    
     checkCollisions();
     updateObjects();
 }
@@ -104,9 +109,14 @@ void FlapBird::eventHandler(RenderWindow * window)
         {
             window->close();
         }
-        if (event.type == Event::MouseButtonPressed)
+        
+        auto paused = status.paused;
+
+        pauseButton->handleEvent(event, window);
+
+        if (!paused && !status.paused) // check if is paused before and after handle pause button
         {
-            player->onMouseButtonPressed();
+            player->handleEvent(event, window);
         }
     }
 }

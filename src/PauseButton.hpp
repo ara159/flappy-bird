@@ -9,12 +9,13 @@ class PauseButton : public MyGameObject
 {
 private:
     Texture* txPauseButton;
-    bool paused = false;
+    Sprite* spPauseButton;
     void init();
 public:
     PauseButton();
     ~PauseButton();
     void draw(RenderWindow* window);
+    void handleEvent(Event, RenderWindow*);
 };
 
 #endif

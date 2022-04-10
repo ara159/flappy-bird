@@ -42,10 +42,6 @@ void TubeFactory::draw(RenderWindow* window)
     {
         tube->draw(window);
     }
-    for (auto checkpoint : checkpoints)
-    {
-        checkpoint->draw(window);
-    }
 }
 
 void TubeFactory::destroyInactive()

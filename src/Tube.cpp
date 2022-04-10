@@ -4,7 +4,7 @@
 Tube::Tube(bool upsidedown, int spaceBetween, int offset) : MyGameObject()
 {
     this->upsidedown = upsidedown;
-    this->offset = offset;
+    this->offset = offset * scale;
     this->spaceBetween = spaceBetween * scale;
     init();
 }
@@ -24,11 +24,11 @@ void Tube::init() {
     spTube->setScale(sf::Vector2f(scale, scale));
     spTube->setOrigin(sf::Vector2f(txTube->getSize().x/2, 0));
     
-    int spawnX = screenSize.x + 100;
-
+    int spawnX = screenSize.x + 100 * scale;
+    
     if (!upsidedown)
     {
-        int minY = 68;
+        int minY = 68 * scale;
         spTube->setPosition(spawnX, minY);
         spTube->move(0, spaceBetween);
     }
@@ -38,7 +38,7 @@ void Tube::init() {
         spTube->setPosition(spawnX, minY);
         spTube->move(0, -spaceBetween);
     }
-    spTube->move(0, +offset);
+    spTube->move(0, offset);
 }
 
 Tube::~Tube()

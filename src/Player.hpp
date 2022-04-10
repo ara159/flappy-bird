@@ -28,11 +28,11 @@ public:
     ~Player();
     void draw(RenderWindow* window);
     void update();
-    void onMouseButtonPressed();
     FloatRect getGlobalBounds();
     void collideWithGround();
     void collideWithTube();
     void start();
+    void handleEvent(Event, RenderWindow*);
 };
 
 #endif

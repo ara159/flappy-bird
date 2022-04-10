@@ -1,5 +1,7 @@
 #include "MyGameObject.hpp"
 
+GameStats MyGameObject::status = GameStats();
+
 MyGameObject::MyGameObject()
 {
     screenSize.x = 144 * scale;

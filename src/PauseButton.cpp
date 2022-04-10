@@ -1,8 +1,14 @@
 #include "PauseButton.hpp"
+#include <iostream>
 
 PauseButton::PauseButton() : MyGameObject()
 {
     init();
+}
+
+PauseButton::~PauseButton() {
+    free(txPauseButton);
+    free(spPauseButton);
 }
 
 void PauseButton::init() {
@@ -11,13 +17,29 @@ void PauseButton::init() {
     
     txPauseButton = new Texture();
     txPauseButton->loadFromImage(tileset, IntRect(121, 306, 13, 14));
+    
+    spPauseButton = new Sprite();
+    spPauseButton->setTexture(*txPauseButton);
+    spPauseButton->setPosition(20, 20);
+    spPauseButton->setScale(Vector2f(scale, scale));
 }
 
 void PauseButton::draw(RenderWindow * window)
 {
-    auto sprite = Sprite();
-    sprite.setTexture(*txPauseButton);
-    sprite.setPosition(20, 20);
-    sprite.setScale(Vector2f(scale, scale));
-    window->draw(sprite);
+    
+    window->draw(*spPauseButton);
+}
+
+void PauseButton::handleEvent(Event event, RenderWindow* window)
+{
+    if (event.type == Event::MouseButtonPressed)
+    {
+        auto clickPosition = Mouse::getPosition(*window);
+        auto pauseBtnBounds = spPauseButton->getGlobalBounds();
+
+        if (pauseBtnBounds.intersects(FloatRect(clickPosition.x, clickPosition.y, 1, 1)))
+        {
+            status.paused = !status.paused;
+        }
+    }
 }

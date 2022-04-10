@@ -51,7 +51,7 @@ void Player::init() {
 
 void Player::draw(RenderWindow* window)
 {
-    if (!collGround && animationCooldown-- == 0)
+    if (!status.paused && !collGround && animationCooldown-- == 0)
     {
         animationCooldown = animationCooldownMax;
         currentTx = (currentTx + 1) % 3;
@@ -76,14 +76,6 @@ void Player::update()
     {
         spPlayer->rotate(1.50);
     }
-}
-
-void Player::onMouseButtonPressed()
-{
-    if (collGround || collTube) { return; }
-    
-    velocity.y = impulse;
-    spPlayer->setRotation(-45);
 }
 
 FloatRect Player::getGlobalBounds()
@@ -115,4 +107,14 @@ void Player::start()
     collGround = false;
     collTube = false;
     animationCooldown = animationCooldownMax;
+}
+
+void Player::handleEvent(Event event, RenderWindow* window)
+{
+    if (event.type == Event::MouseButtonPressed)
+    {
+        if (collGround || collTube) return;
+        velocity.y = impulse;
+        spPlayer->setRotation(-45);
+    }
 }

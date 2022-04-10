@@ -5,12 +5,19 @@
 
 using namespace sf;
 
+struct GameStats
+{
+    bool paused = false;
+};
+
+
 class MyGameObject
 {
 protected:
-    float scale = 1;
+    float scale = 3;
     Vector2i screenSize;
 public:
+    static GameStats status;
     MyGameObject();
     ~MyGameObject();
     void setScale(float scale);

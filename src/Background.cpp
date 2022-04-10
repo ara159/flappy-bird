@@ -4,10 +4,6 @@ Background::Background() : MyGameObject() {
     init();
 }
 
-Background::Background(float scale) : MyGameObject(scale) {
-    init();
-}
-
 void Background::init() {
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");

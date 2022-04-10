@@ -13,7 +13,6 @@ private:
     void init();
 public:
     Ground();
-    Ground(float scale);
     ~Ground();
     void run(int velocity);
     void draw(RenderWindow * window);

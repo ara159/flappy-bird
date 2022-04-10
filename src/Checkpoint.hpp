@@ -13,7 +13,7 @@ private:
     RectangleShape* collRect;
     bool active = true;
 public:
-    Checkpoint(float scale);
+    Checkpoint();
     ~Checkpoint();
     void update(float velocity);
     void draw(RenderWindow* window);

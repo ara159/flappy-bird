@@ -14,7 +14,6 @@ private:
     void init();
 public:
     Background();
-    Background(float scale);
     ~Background();
     void start();
     void run(int velocity);

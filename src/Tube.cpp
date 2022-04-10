@@ -1,14 +1,11 @@
 #include "Tube.hpp"
+#include <iostream>
 
-Tube::Tube() : MyGameObject()
-{
-    init();
-}
-
-Tube::Tube(float scale, bool upsidedown, int closest) : MyGameObject(scale)
+Tube::Tube(bool upsidedown, int spaceBetween, int offset) : MyGameObject()
 {
     this->upsidedown = upsidedown;
-    this->closest = closest * scale;
+    this->offset = offset;
+    this->spaceBetween = spaceBetween * scale;
     init();
 }
 
@@ -25,19 +22,23 @@ void Tube::init() {
 
     spTube = new Sprite(*txTube);
     spTube->setScale(sf::Vector2f(scale, scale));
-
-    int min = 45 * scale;
+    spTube->setOrigin(sf::Vector2f(txTube->getSize().x/2, 0));
+    
+    int spawnX = screenSize.x + 100;
 
     if (!upsidedown)
     {
-        spTube->setOrigin(sf::Vector2f(txTube->getSize().x/2, 0));
-        spTube->setPosition(screenSize.x + 100, screenSize.y/2 + closest + min/2);
+        int minY = 68;
+        spTube->setPosition(spawnX, minY);
+        spTube->move(0, spaceBetween);
     }
     else
     {
-        spTube->setOrigin(sf::Vector2f(txTube->getSize().x/2, txTube->getSize().y));
-        spTube->setPosition(screenSize.x + 100, screenSize.y/2 - closest - min/2);
+        int minY = 0;
+        spTube->setPosition(spawnX, minY);
+        spTube->move(0, -spaceBetween);
     }
+    spTube->move(0, +offset);
 }
 
 Tube::~Tube()

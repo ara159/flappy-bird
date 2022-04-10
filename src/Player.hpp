@@ -25,7 +25,6 @@ private:
     void init();
 public:
     Player();
-    Player(float scale);
     ~Player();
     void draw(RenderWindow* window);
     void update();

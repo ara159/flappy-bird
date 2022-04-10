@@ -7,11 +7,6 @@ Player::Player() : MyGameObject()
     init();
 }
 
-Player::Player(float scale) : MyGameObject(scale)
-{
-    init();
-}
-
 Player::~Player() {
     free(spPlayer);
 

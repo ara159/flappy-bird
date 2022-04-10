@@ -1,6 +1,6 @@
 #include "Checkpoint.hpp"
 
-Checkpoint::Checkpoint(float scale) : MyGameObject(scale)
+Checkpoint::Checkpoint()
 {
     init();
 }

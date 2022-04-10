@@ -5,11 +5,6 @@ Ground::Ground() : MyGameObject()
     init();
 }
 
-Ground::Ground(float scale) : MyGameObject(scale)
-{
-    init();
-}
-
 void Ground::init() {
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
@@ -20,7 +15,8 @@ void Ground::init() {
 
     spGround = new Sprite(*txGround);
     spGround->setScale(sf::Vector2f(scale, scale));
-    spGround->setPosition(0, screenSize.y - spGround->getGlobalBounds().height * 1/2);
+    spGround->setPosition(0, 228 * scale);
+    int p = spGround->getGlobalBounds().height;
 }
 
 Ground::~Ground()

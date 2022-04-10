@@ -5,29 +5,23 @@ FlapBird::FlapBird() : MyGameObject()
     init();
 }
 
-FlapBird::FlapBird(float scale) : MyGameObject(scale)
-{
-    init();
-}
-
 FlapBird::~FlapBird()
 {
     free(player);
     free(background);
     free(ground);
-    for (auto tube : tubes)
-    {
-        free(tube);
-    }
+    free(pauseButton);
+    free(points);
+    free(tubeFactory);
 }
 
 void FlapBird::init() {
-    player = new Player(scale);
-    ground = new Ground(scale);
-    background = new Background(scale);
-    points = new DisplayPoints(scale);
-    font = new Font();
-    font->loadFromFile("FlappyBirdy.ttf");
+    player = new Player();
+    ground = new Ground();
+    background = new Background();
+    points = new DisplayPoints();
+    pauseButton = new PauseButton();
+    tubeFactory = new TubeFactory();
 }
 
 void FlapBird::start()
@@ -35,58 +29,35 @@ void FlapBird::start()
     velocity = 1;
     gameOverCooldown = gameOverCooldownMax;
     gameOver = false;
-    tubeParams = FlapBird::TubeCreationParams{0, 60 * 2, 60, 1};
     player->start();
     background->start();
     points->start();
-    for (auto tube : tubes) free(tube);    
-    tubes.clear();
-    for (auto checkpoint : checkpoints) free(checkpoint);    
-    checkpoints.clear();
+    tubeFactory->start();
 }
 
-void FlapBird::run(RenderWindow * window)
+void FlapBird::update(RenderWindow * window)
 {
     if (gameOver) {
         if(--gameOverCooldown == 0) start();
         return;
     }
-    
     checkCollisions();
     updateObjects();
-    clearInactiveTube();
-
-    int range = 30;
-    if (tubeParams.cooldown-- == 0)
-    {
-        tubeParams.maxCooldown -= tubeParams.decay;
-        tubeParams.cooldown = tubeParams.maxCooldown;
-        tubes.push_back(new Tube(scale, false, rand() % range));
-        tubes.push_back(new Tube(scale, true, rand() % range));
-        checkpoints.push_back(new Checkpoint(scale));
-    }
 }
 
 void FlapBird::updateObjects()
 {
-    for (auto tube : tubes)
-    {
-        tube->update(velocity);
-    }
-    for (auto checkpoint : checkpoints)
-    {
-        checkpoint->update(velocity);
-    }
     background->run(velocity);
     ground->run(velocity);
     player->update();
+    tubeFactory->update(velocity);
 }
 
 void FlapBird::checkCollisions()
 {
     auto p = player->getGlobalBounds();
 
-    for (auto tube : tubes)
+    for (auto tube : tubeFactory->getTubes())
     {
         if (p.intersects(tube->getGlobalBounds()))
         {
@@ -96,7 +67,7 @@ void FlapBird::checkCollisions()
         }
     }
 
-    for (auto checkpoint : checkpoints)
+    for (auto checkpoint : tubeFactory->getCheckpoints())
     {
         if (p.intersects(checkpoint->getGlobalBounds()))
         {
@@ -113,44 +84,14 @@ void FlapBird::checkCollisions()
     }
 }
 
-void FlapBird::clearInactiveTube()
-{
-    auto nTubes = std::vector<Tube*>();
-    for (auto tube : tubes)
-    {
-        if (tube->isActive())
-            nTubes.push_back(tube);
-        else
-            free(tube);
-    }
-    tubes = nTubes;
-    
-    auto nCheckpoints = std::vector<Checkpoint*>();
-    for (auto checkpoint : checkpoints)
-    {
-        if (checkpoint->isActive())
-            nCheckpoints.push_back(checkpoint);
-        else
-            free(checkpoint);
-    }
-    checkpoints = nCheckpoints;
-}
-
 void FlapBird::draw(RenderWindow * window)
 {   
     background->draw(window);
-    
-    for (auto tube : tubes)
-    {
-        tube->draw(window);
-    }
-    for (auto checkpoint : checkpoints)
-    {
-        checkpoint->draw(window);
-    }
+    tubeFactory->draw(window);
     ground->draw(window);
     player->draw(window);
     points->draw(window);
+    pauseButton->draw(window);
 }
 
 void FlapBird::eventHandler(RenderWindow * window)

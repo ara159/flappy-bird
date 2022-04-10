@@ -5,13 +5,12 @@ DisplayPoints::DisplayPoints() : MyGameObject()
     init();
 }
 
-DisplayPoints::DisplayPoints(float scale) : MyGameObject(scale)
-{
-    init();
-}
-
 DisplayPoints::~DisplayPoints()
 {
+    for (int i = 0; i < 10; i++)
+    {
+        free(txNumbers[i]);
+    }
 }
 
 void DisplayPoints::init()

@@ -16,7 +16,6 @@ private:
     void init();
 public:
     Game();
-    Game(float scale);
     ~Game();
     void start();
 };

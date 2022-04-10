@@ -12,8 +12,8 @@ protected:
     Vector2i screenSize;
 public:
     MyGameObject();
-    MyGameObject(float scale);
     ~MyGameObject();
+    void setScale(float scale);
 };
 
 #endif

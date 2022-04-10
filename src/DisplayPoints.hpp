@@ -10,7 +10,6 @@ private:
     Texture* txNumbers[10];
 public:
     DisplayPoints();
-    DisplayPoints(float scale);
     ~DisplayPoints();
     void draw(RenderWindow*  window);
     void update();

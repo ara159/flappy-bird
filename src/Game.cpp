@@ -5,13 +5,8 @@ Game::Game() : MyGameObject()
     init();
 }
 
-Game::Game(float scale) : MyGameObject(scale)
-{
-    init();
-}
-
 void Game::init() {
-    flapBird = new FlapBird(scale);
+    flapBird = new FlapBird();
 }
 
 Game::~Game()
@@ -34,7 +29,7 @@ void Game::run()
     {
         draw();
         flapBird->eventHandler(window);
-        flapBird->run(window);
+        flapBird->update(window);
     }
 }
 

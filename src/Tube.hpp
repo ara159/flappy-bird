@@ -12,11 +12,11 @@ private:
     Sprite* spTube;
     bool active = true;
     bool upsidedown = false;
-    int closest = 0;
+    int spaceBetween = 0;
+    int offset = 0;
     void init();
 public:
-    Tube();
-    Tube(float scale, bool upsidedown, int closest);
+    Tube(bool upsidedown, int spaceBetween, int offset);
     ~Tube();
     void draw(RenderWindow* window);
     void update(float velocity);

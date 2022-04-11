@@ -8,6 +8,7 @@ using namespace sf;
 struct GameStats
 {
     bool paused = false;
+    bool gameOver = false;
 };
 
 

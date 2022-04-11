@@ -9,6 +9,8 @@ Player::Player() : MyGameObject()
 
 Player::~Player() {
     free(spPlayer);
+    free(soundBuffer);
+    free(sound);
 
     for (int i = 0; i < 3; i++)
     {
@@ -47,6 +49,10 @@ void Player::init() {
     impulse *= scale;
     initialOffset.x = screenSize.x * 1/4;
     initialOffset.y = screenSize.y * 1/5;
+
+    soundBuffer = new SoundBuffer();
+    soundBuffer->loadFromFile("flappy-birdy-audios.wav");
+    sound = new Sound(*soundBuffer);
 }
 
 void Player::draw(RenderWindow* window)
@@ -90,6 +96,9 @@ void Player::collideWithGround()
 
 void Player::collideWithTube()
 {
+    if (collTube) return;
+    // sound->setPlayingOffset(Time());
+    // sound->play();
     collTube = true;
 }
 

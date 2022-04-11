@@ -10,6 +10,7 @@
 #include "Checkpoint.hpp"
 #include "DisplayPoints.hpp"
 #include "PauseButton.hpp"
+#include "GameOver.hpp"
 
 using namespace sf;
 
@@ -22,10 +23,8 @@ private:
     PauseButton* pauseButton;
     DisplayPoints* points;
     TubeFactory* tubeFactory;
+    GameOver* gameOverScreen;
     int velocity;
-    int gameOverCooldown;
-    const int gameOverCooldownMax = 180;
-    bool gameOver;
     void init();
     void checkCollisions();
     void updateObjects();

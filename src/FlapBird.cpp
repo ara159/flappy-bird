@@ -23,13 +23,12 @@ void FlapBird::init() {
     points = new DisplayPoints();
     pauseButton = new PauseButton();
     tubeFactory = new TubeFactory();
+    gameOverScreen = new GameOver();
 }
 
 void FlapBird::start()
 {
     velocity = 1;
-    gameOverCooldown = gameOverCooldownMax;
-    gameOver = false;
     player->start();
     background->start();
     points->start();
@@ -38,14 +37,7 @@ void FlapBird::start()
 
 void FlapBird::update(RenderWindow * window)
 {
-    if (gameOver) {
-        if(--gameOverCooldown == 0) start();
-        return;
-    }
-    
-    if (status.paused)
-        return;
-    
+    if (status.paused) return;   
     checkCollisions();
     updateObjects();
 }
@@ -68,6 +60,7 @@ void FlapBird::checkCollisions()
         {
             velocity = 0;
             player->collideWithTube();
+            gameOverScreen->start();
             break;
         }
     }
@@ -85,18 +78,22 @@ void FlapBird::checkCollisions()
     {
         player->collideWithGround();
         velocity = 0;
-        gameOver = true;
+        gameOverScreen->start();
     }
 }
 
 void FlapBird::draw(RenderWindow * window)
-{   
+{
     background->draw(window);
     tubeFactory->draw(window);
     ground->draw(window);
     player->draw(window);
-    points->draw(window);
-    pauseButton->draw(window);
+    
+    if (!status.gameOver) {
+        points->draw(window);
+        pauseButton->draw(window);
+    }
+    gameOverScreen->draw(window);
 }
 
 void FlapBird::eventHandler(RenderWindow * window)
@@ -110,6 +107,18 @@ void FlapBird::eventHandler(RenderWindow * window)
             window->close();
         }
         
+        auto gameOver = status.gameOver;
+
+        if (status.gameOver) {
+            gameOverScreen->handleEvent(event, window);
+        }
+
+        if (gameOver && !status.gameOver)
+        {
+            start();
+            return;
+        }
+
         auto paused = status.paused;
 
         pauseButton->handleEvent(event, window);

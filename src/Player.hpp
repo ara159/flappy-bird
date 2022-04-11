@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H 1
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include "MyGameObject.hpp"
 
@@ -9,6 +10,8 @@ using namespace sf;
 class Player : public MyGameObject
 {
 private:
+    SoundBuffer* soundBuffer;
+    Sound* sound;
     Texture* txPlayer[9];
     Sprite* spPlayer;
     Vector2f velocity;

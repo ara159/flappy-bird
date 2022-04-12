@@ -75,3 +75,8 @@ void DisplayPoints::update()
 {
     points += 1;
 }
+
+int DisplayPoints::getPoints()
+{
+    return points;
+}

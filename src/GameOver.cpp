@@ -2,6 +2,7 @@
 
 GameOver::GameOver()
 {
+    this->points = points;
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
 
@@ -35,6 +36,25 @@ GameOver::GameOver()
     spScore = new Sprite(*txScore);
     spScore->setOrigin(Vector2f(113/2, 0));
     spScore->setScale(Vector2f(scale, scale));
+
+    IntRect numbersRects[10] = {
+        IntRect(137, 306, 7, 10),
+        IntRect(139, 477, 5, 10),
+        IntRect(137, 489, 7, 10),
+        IntRect(131, 501, 7, 10),
+        IntRect(502, 0, 7, 10),
+        IntRect(502, 12, 7, 10),
+        IntRect(505, 26, 7, 10),
+        IntRect(505, 42, 7, 10),
+        IntRect(293, 242, 7, 10),
+        IntRect(331, 206, 7, 10),
+    };
+
+    for (int i = 0; i < 10; i++)
+    {
+        txScoreNumbers[i] = new Texture();
+        txScoreNumbers[i]->loadFromImage(tileset, numbersRects[i]);
+    }
 }
 
 GameOver::~GameOver()
@@ -47,61 +67,70 @@ GameOver::~GameOver()
     free(spScore);
     free(txShareButton);
     free(spShareButton);
+    for (auto number : spScoreNumbers) free(number);
+    for (int i = 0; i < 10; i++) free(txScoreNumbers[i]);
 }
 
 void GameOver::draw(RenderWindow* window)
 {
     if (!started) return;
-    auto color = rect->getFillColor();
-    if (cooldownBegin > 0)
-    {
-        cooldownBegin -= 1;
-        if (color.a >= 4)
-            color.a -= 4;
-        rect->setFillColor(color);
-        window->draw(*rect);
-        return;
-    }
-
-    spGameOverPhrase->setPosition(screenSize.x/2, 15 * scale);
-    color = spGameOverPhrase->getColor();
-    if (color.a < 255)
-    {
-        color.a += 15;
-        spGameOverPhrase->setColor(color);
-        window->draw(*spGameOverPhrase);
-        return;
-    }
+    window->draw(*rect);
     window->draw(*spGameOverPhrase);
-
-    auto pos = spScore->getPosition();
-    if (pos.y > 51 * scale)
-    {
-        spScore->move(0, -8 * scale);
-        window->draw(*spScore);
-        return;
-    }
     window->draw(*spScore);
     window->draw(*spOkButton);
     window->draw(*spShareButton);
-    buttonActive = true;
-}
+    for (auto number : spScoreNumbers)
+        window->draw(*number);
+} 
 
-void GameOver::start()
+void GameOver::start(int points)
 {
     if (started) return;
+    this->points = points;
     status.gameOver = true;
     started = true;
     cooldownBegin = 64;
     cooldownEnd = 64;
     buttonActive = false;
+    
     rect->setFillColor(Color::White);
+    
     spGameOverPhrase->setColor(Color{255,255,255,0});
+    spGameOverPhrase->setPosition(screenSize.x/2, 15 * scale);
+    
     spScore->setPosition(screenSize.x/2, screenSize.y + 57 * scale);
+    
     spOkButton->setPosition(screenSize.x/2, 128 * scale);
     spOkButton->move(-40 * 2/3 * scale, 0);
+    spOkButton->setColor(Color::Transparent);
+    
     spShareButton->setPosition(screenSize.x/2, 128 * scale);
     spShareButton->move(40 * 2/3 * scale, 0);
+    spShareButton->setColor(Color::Transparent);
+
+    for (auto number : spScoreNumbers) free(number);
+    spScoreNumbers.clear();
+    
+    std::string strPoints = std::to_string(points);
+    auto scoreBounds = spScore->getGlobalBounds();
+
+    for (int i = 0; i < strPoints.length(); i++)
+    {
+        auto number = strPoints.substr(strPoints.length() - 1 - i, 1);
+        auto txNumber = txScoreNumbers[std::stoi(number)];
+        auto spNumber = new Sprite(*txNumber);
+        
+        spNumber->setOrigin(txNumber->getSize().x, 0);
+        spNumber->setScale(Vector2f(scale, scale));
+        spNumber->setPosition(scoreBounds.left + scoreBounds.width - 11 * scale, scoreBounds.top + 17 * scale);
+
+        for (int j = 0; j < i; j++)
+        {
+            spNumber->move(-spScoreNumbers[i -1]->getGlobalBounds().width - 1 * scale, 0);
+        }
+
+        spScoreNumbers.push_back(spNumber);
+    }
 }
 
 void GameOver::handleEvent(Event event, RenderWindow* window)
@@ -118,4 +147,44 @@ void GameOver::handleEvent(Event event, RenderWindow* window)
             started = false;
         }
     }
+}
+
+void GameOver::update()
+{
+    if (!started) return;
+    Color color;
+    Vector2f pos;
+
+    color = rect->getFillColor();
+    if (color.a > 0)
+    {
+        color.a -= 15;
+        rect->setFillColor(color);
+        return;
+    }
+
+    color = spGameOverPhrase->getColor();
+    if (color.a < 255)
+    {
+        color.a += 15;
+        spGameOverPhrase->setColor(color);
+        return;
+    }
+
+    int i = 0;
+    for (i = 0; i < 8; i++)
+    {
+        if (spScore->getPosition().y < 50 * scale)
+            break;
+        
+        spScore->move(0, -1);
+
+        for (auto number : spScoreNumbers)
+            number->move(0, -1);
+    }
+    if (i > 0) return;
+
+    spOkButton->setColor(Color{255,255,255,255});
+    spShareButton->setColor(Color{255,255,255,255});
+    buttonActive = true;
 }

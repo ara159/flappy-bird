@@ -14,6 +14,7 @@ public:
     void draw(RenderWindow*  window);
     void update();
     void start();
+    int getPoints();
 };
 
 #endif

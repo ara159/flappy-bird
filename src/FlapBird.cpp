@@ -60,6 +60,7 @@ void FlapBird::updateObjects()
         player->update();
         tubeFactory->update(velocity);
     }
+    gameOverScreen->update();
 }
 
 void FlapBird::checkCollisions()
@@ -72,7 +73,7 @@ void FlapBird::checkCollisions()
         {
             velocity = 0;
             player->collideWithTube();
-            gameOverScreen->start();
+            gameOverScreen->start(points->getPoints());
             break;
         }
     }
@@ -90,7 +91,7 @@ void FlapBird::checkCollisions()
     {
         player->collideWithGround();
         velocity = 0;
-        gameOverScreen->start();
+        gameOverScreen->start(points->getPoints());
     }
 }
 

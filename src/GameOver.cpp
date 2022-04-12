@@ -84,6 +84,7 @@ void GameOver::draw(RenderWindow* window)
     window->draw(*spScore);
     window->draw(*spOkButton);
     window->draw(*spShareButton);
+    buttonActive = true;
 }
 
 void GameOver::start()
@@ -93,6 +94,7 @@ void GameOver::start()
     started = true;
     cooldownBegin = 64;
     cooldownEnd = 64;
+    buttonActive = false;
     rect->setFillColor(Color::White);
     spGameOverPhrase->setColor(Color{255,255,255,0});
     spScore->setPosition(screenSize.x/2, screenSize.y + 57 * scale);
@@ -104,6 +106,7 @@ void GameOver::start()
 
 void GameOver::handleEvent(Event event, RenderWindow* window)
 {
+    if (!buttonActive) return;
     if (event.type == Event::MouseButtonPressed)
     {
         auto clickPosition = Mouse::getPosition(*window);

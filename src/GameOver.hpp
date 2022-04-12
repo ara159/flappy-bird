@@ -7,6 +7,7 @@ class GameOver : public MyGameObject
 private:
     int cooldownBegin;
     int cooldownEnd;
+    bool buttonActive;
     RectangleShape* rect;
     Texture* txGameOverPhrase;
     Sprite* spGameOverPhrase;

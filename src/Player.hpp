@@ -17,7 +17,7 @@ private:
     Vector2f velocity;
     int skin = 0;
     int animationCooldown = 0;
-    const int animationCooldownMax = 30;
+    const int animationCooldownMax = 10;
     int currentTx = 0;
     bool collGround = false;
     bool collTube = false;

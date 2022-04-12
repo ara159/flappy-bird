@@ -24,7 +24,10 @@ private:
     DisplayPoints* points;
     TubeFactory* tubeFactory;
     GameOver* gameOverScreen;
+    Texture* txGetReady;
+    Texture* txInstructions;
     int velocity;
+    bool started;
     void init();
     void checkCollisions();
     void updateObjects();

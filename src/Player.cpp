@@ -47,8 +47,8 @@ void Player::init() {
     maxVelocity *= scale;
     gravity *= scale;
     impulse *= scale;
-    initialOffset.x = screenSize.x * 1/4;
-    initialOffset.y = screenSize.y * 1/5;
+    initialOffset.x = screenSize.x * 0.5;
+    initialOffset.y = screenSize.y * 0.5;
 
     soundBuffer = new SoundBuffer();
     soundBuffer->loadFromFile("flappy-birdy-audios.wav");
@@ -80,7 +80,7 @@ void Player::update()
     }
     if (angle > 270 || angle < 90)
     {
-        spPlayer->rotate(1.50);
+        spPlayer->rotate(2);
     }
 }
 

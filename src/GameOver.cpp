@@ -87,7 +87,6 @@ void GameOver::start(int points)
 {
     if (started) return;
     this->points = points;
-    status.gameOver = true;
     started = true;
     cooldownBegin = 64;
     cooldownEnd = 64;
@@ -143,8 +142,6 @@ void GameOver::handleEvent(Event event, RenderWindow* window)
 
         if (pauseBtnBounds.intersects(FloatRect(clickPosition.x, clickPosition.y, 1, 1)))
         {
-            status.gameOver = false;
-            started = false;
         }
     }
 }

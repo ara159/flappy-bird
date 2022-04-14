@@ -19,23 +19,16 @@ void Game::start()
     window = new RenderWindow(VideoMode(screenSize.x, screenSize.y), "Flap Bird");
     window->setVerticalSyncEnabled(true);
     window->setFramerateLimit(60);
-    flapBird->start();
     run();
 }
 
 void Game::run()
 {
+    flapBird->start();
     while (window->isOpen())
     {
-        draw();
-        flapBird->eventHandler(window);
-        flapBird->update(window);
+        window->clear(Color{52, 119, 235});
+        flapBird->run(window);
+        window->display();
     }
-}
-
-void Game::draw()
-{
-    window->clear(Color{52, 119, 235});
-    flapBird->draw(window);
-    window->display();
 }

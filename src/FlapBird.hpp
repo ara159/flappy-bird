@@ -11,6 +11,8 @@
 #include "DisplayPoints.hpp"
 #include "PauseButton.hpp"
 #include "GameOver.hpp"
+#include "Title.hpp"
+#include "GetReady.hpp"
 
 using namespace sf;
 
@@ -24,8 +26,8 @@ private:
     DisplayPoints* points;
     TubeFactory* tubeFactory;
     GameOver* gameOverScreen;
-    Texture* txGetReady;
-    Texture* txInstructions;
+    Title* titleScreen;
+    GetReady* getReady;
     int velocity;
     bool started;
     void init();
@@ -38,6 +40,7 @@ public:
     void update(RenderWindow * window);
     void draw(RenderWindow * window);
     void eventHandler(RenderWindow * window);
+    void run(RenderWindow* window);
 };
 
 #endif

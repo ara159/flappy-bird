@@ -5,23 +5,27 @@
 
 using namespace sf;
 
+enum GameScreen { Title_S, GetReady_S, GamePlay_S, Pause_S, GameOver_S };
+
 struct GameStats
 {
     bool paused = false;
     bool gameOver = false;
+    bool gameStarted = false;
+    bool getReady = false;
+    GameScreen scene = GameScreen::Title_S;
 };
-
 
 class MyGameObject
 {
 protected:
-    float scale = 3;
-    Vector2i screenSize;
+    static float scale;
+    static Vector2i screenSize;
+    static GameScreen scene;
 public:
     static GameStats status;
     MyGameObject();
     ~MyGameObject();
-    void setScale(float scale);
 };
 
 #endif

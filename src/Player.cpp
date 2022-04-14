@@ -57,12 +57,6 @@ void Player::init() {
 
 void Player::draw(RenderWindow* window)
 {
-    if (!status.paused && !collGround && animationCooldown-- == 0)
-    {
-        animationCooldown = animationCooldownMax;
-        currentTx = (currentTx + 1) % 3;
-        spPlayer->setTexture(*txPlayer[skin * 3 + currentTx]);
-    }
     window->draw(*spPlayer);
 }
 
@@ -78,9 +72,20 @@ void Player::update()
     {
         velocity.y += gravity;
     }
+    
     if (angle > 270 || angle < 90)
     {
         spPlayer->rotate(2);
+    }
+
+    if (
+        (scene == GameScreen::GamePlay_S ||
+        scene == GameScreen::GetReady_S) &&
+        animationCooldown-- == 0)
+    {
+        animationCooldown = animationCooldownMax;
+        currentTx = (currentTx + 1) % 3;
+        spPlayer->setTexture(*txPlayer[skin * 3 + currentTx]);
     }
 }
 

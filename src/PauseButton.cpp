@@ -39,7 +39,6 @@ void PauseButton::handleEvent(Event event, RenderWindow* window)
 
         if (pauseBtnBounds.intersects(FloatRect(clickPosition.x, clickPosition.y, 1, 1)))
         {
-            status.paused = !status.paused;
         }
     }
 }

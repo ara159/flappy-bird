@@ -14,6 +14,9 @@ FlapBird::~FlapBird()
     free(pauseButton);
     free(points);
     free(tubeFactory);
+    free(gameOverScreen);
+    free(titleScreen);
+    free(getReady);
 }
 
 void FlapBird::init() {
@@ -24,43 +27,62 @@ void FlapBird::init() {
     pauseButton = new PauseButton();
     tubeFactory = new TubeFactory();
     gameOverScreen = new GameOver();
-
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
-    txGetReady = new Texture();
-    txGetReady->loadFromImage(tileset, IntRect(295, 59, 92, 25));
-
-    txInstructions = new Texture();
-    txInstructions->loadFromImage(tileset, IntRect(292, 91, 57, 49));
+    titleScreen = new Title();
+    getReady = new GetReady();
 }
 
 void FlapBird::start()
 {
-    started = false;
-    velocity = 1;
-    player->start();
     background->start();
-    points->start();
-    tubeFactory->start();
+    velocity = 1;
+    
+    // if (scene == GameScreen::GamePlay_S || scene == GameScreen::GetReady_S) {
+    //     player->start();
+    //     points->start();
+    //     tubeFactory->start();
+        
+    //     if (scene == GameScreen::GetReady_S)
+    //     {
+    //         getReady->start();
+    //     }
+    // }
+
+    // if (scene == GameScreen::Title_S)
+    // {
+    //     titleScreen->start();
+    // }
 }
 
 void FlapBird::update(RenderWindow * window)
 {
-    if (status.paused) return;   
-    checkCollisions();
-    updateObjects();
+    background->run(velocity);
+    ground->run(velocity);
+
+    if (scene == GameScreen::GamePlay_S)
+    {
+        player->update();
+        tubeFactory->update(velocity);
+        checkCollisions();
+    }
+    
+    if (scene == GameScreen::GetReady_S)
+    {
+        getReady->update();
+    }
+
+    if (scene == GameScreen::Title_S)
+    {
+        titleScreen->update();
+    }
+    
+    if (scene == GameScreen::GameOver_S)
+    {
+        gameOverScreen->update();
+    }
 }
 
 void FlapBird::updateObjects()
 {
-    background->run(velocity);
-    ground->run(velocity);
-    if (started)
-    {
-        player->update();
-        tubeFactory->update(velocity);
-    }
-    gameOverScreen->update();
 }
 
 void FlapBird::checkCollisions()
@@ -98,29 +120,35 @@ void FlapBird::checkCollisions()
 void FlapBird::draw(RenderWindow * window)
 {
     background->draw(window);
+
+    if (scene == GameScreen::Title_S)
+    {
+        ground->draw(window);
+        titleScreen->draw(window);
+        return;
+    }
+
     tubeFactory->draw(window);
-    ground->draw(window);
     player->draw(window);
+    ground->draw(window);
     
-    if (!status.gameOver) {
+    if (scene == GameScreen::GetReady_S)
+    {
+        points->draw(window);
+        pauseButton->draw(window);
+        getReady->draw(window);
+    }
+    
+    if (scene == GameScreen::GamePlay_S)
+    {
         points->draw(window);
         pauseButton->draw(window);
     }
-    if (!started)
+    
+    if (scene == GameScreen::GameOver_S)
     {
-        Sprite spGetReady(*txGetReady);
-        spGetReady.setOrigin(spGetReady.getGlobalBounds().width/2, 0);
-        spGetReady.setScale(Vector2f(scale, scale));
-        spGetReady.setPosition(screenSize.x/2, 50 * scale);
-        window->draw(spGetReady);
-
-        Sprite spInstructions(*txInstructions);
-        spInstructions.setOrigin(spInstructions.getGlobalBounds().width/2, 0);
-        spInstructions.setScale(Vector2f(scale, scale));
-        spInstructions.setPosition(screenSize.x/2, screenSize.y/2 * 1.25);
-        window->draw(spInstructions);
+        gameOverScreen->draw(window);
     }
-    gameOverScreen->draw(window);
 }
 
 void FlapBird::eventHandler(RenderWindow * window)
@@ -133,32 +161,56 @@ void FlapBird::eventHandler(RenderWindow * window)
         {
             window->close();
         }
-        
-        auto gameOver = status.gameOver;
 
-        if (status.gameOver) {
+        if (scene == GameScreen::Title_S)
+        {
+            titleScreen->handleEvent(event, window);
+        }
+        
+        if (scene == GameScreen::GameOver_S)
+        {
             gameOverScreen->handleEvent(event, window);
         }
 
-        if (gameOver && !status.gameOver)
+        if (scene == GameScreen::GetReady_S)
         {
-            start();
-            return;
+            getReady->handleEvent(event, window);
         }
 
-        auto paused = status.paused;
-
-        if (started)
+        if (scene == GameScreen::GamePlay_S)
+        {
             pauseButton->handleEvent(event, window);
-
-        if (!started)
-        {
-            if (event.type == Event::MouseButtonPressed)
-                started = true;
         }
-        if (!paused && !status.paused) // check if is paused before and after handle pause button
+        
+        if (scene == GameScreen::GamePlay_S)
         {
             player->handleEvent(event, window);
         }
     }
+}
+
+void FlapBird::run(RenderWindow* window)
+{
+    auto sceneBefore = scene;
+    
+    update(window);
+    eventHandler(window);
+
+    if (sceneBefore != scene)
+    {
+        if (scene == GameScreen::GetReady_S)
+        {
+            player->start();
+            points->start();
+            tubeFactory->start();
+            getReady->start();
+        }
+
+        if (scene == GameScreen::GamePlay_S)
+        {
+            
+        }
+    }
+
+    draw(window);
 }

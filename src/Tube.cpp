@@ -52,10 +52,10 @@ void Tube::draw(RenderWindow* window)
     window->draw(*spTube);
 }
 
-void Tube::update(float velocity)
+void Tube::update()
 {
     if (!active) return;
-    spTube->move(-velocity * scale, 0);
+    spTube->move(status.velocity * scale * -1, 0);
     if (spTube->getPosition().x < -100)
     {
         active = false;

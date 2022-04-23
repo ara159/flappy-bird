@@ -85,13 +85,13 @@ void TubeFactory::createNewOnes()
     checkpoints.push_back(new Checkpoint());
 }
 
-void TubeFactory::update(float velocity)
+void TubeFactory::update()
 {
     for (auto tube : tubes)
-        tube->update(velocity);
+        tube->update();
     
     for (auto checkpoint : checkpoints)
-        checkpoint->update(velocity);
+        checkpoint->update(status.velocity);
     
     destroyInactive();
     createNewOnes();

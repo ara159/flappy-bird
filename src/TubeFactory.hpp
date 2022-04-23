@@ -23,7 +23,7 @@ public:
     TubeFactory();
     ~TubeFactory();
     void draw(RenderWindow* window);
-    void update(float velocity);
+    void update();
     std::vector<Tube*> getTubes();
     std::vector<Checkpoint*> getCheckpoints();
 };

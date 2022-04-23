@@ -19,7 +19,7 @@ public:
     Tube(bool upsidedown, int spaceBetween, int offset);
     ~Tube();
     void draw(RenderWindow* window);
-    void update(float velocity);
+    void update();
     FloatRect getGlobalBounds();
     bool isActive();
 };

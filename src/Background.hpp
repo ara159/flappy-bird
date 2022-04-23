@@ -16,7 +16,7 @@ public:
     Background();
     ~Background();
     void start();
-    void run(int velocity);
+    void update();
     void draw(RenderWindow * window);
 };
 

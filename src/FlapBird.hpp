@@ -14,9 +14,12 @@
 
 using namespace sf;
 
+enum FBScreens { INIT, GET_READY, GAMEPLAY, GAMEOVER };
+
 class FlapBird : public MyGameObject
 {
 private:
+    static FBScreens screen;
     Player* player;
     Background* background;
     Ground* ground;
@@ -26,11 +29,10 @@ private:
     GameOver* gameOverScreen;
     Texture* txGetReady;
     Texture* txInstructions;
-    int velocity;
-    bool started;
-    void init();
     void checkCollisions();
     void updateObjects();
+    void changeScreen(FBScreens screen);
+    bool isScreen(FBScreens screen);
 public:
     FlapBird();
     ~FlapBird();

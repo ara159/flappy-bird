@@ -9,6 +9,7 @@ struct GameStats
 {
     bool paused = false;
     bool gameOver = false;
+    int velocity = 0;
 };
 
 

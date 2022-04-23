@@ -25,10 +25,10 @@ Ground::~Ground()
     free(txGround);
 }
 
-void Ground::run(int velocity)
+void Ground::update()
 {
     IntRect last = spGround->getTextureRect();
-    spGround->setTextureRect(IntRect(last.left + velocity, 0, last.width, last.height));
+    spGround->setTextureRect(IntRect(last.left + status.velocity, 0, last.width, last.height));
 }
 
 void Ground::draw(RenderWindow* window)

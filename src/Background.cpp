@@ -28,12 +28,15 @@ void Background::start() {
 
 Background::~Background() {
     free(spBackground);
-    free(txBackground);
+    for (int i = 0; i < 2; i++)
+    {
+        free(txBackground[i]);
+    }
 }
 
-void Background::run(int velocity)
+void Background::update()
 {
-    if (--cooldown > 0 || velocity == 0) return;
+    if (--cooldown > 0 || status.velocity == 0) return;
     cooldown = 6 / scale;
 
     auto last = spBackground->getTextureRect();

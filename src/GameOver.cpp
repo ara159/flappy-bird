@@ -55,6 +55,18 @@ GameOver::GameOver()
         txScoreNumbers[i] = new Texture();
         txScoreNumbers[i]->loadFromImage(tileset, numbersRects[i]);
     }
+
+    IntRect medalsRects[4] = {
+        IntRect(112, 477, 22, 22),
+        IntRect(112, 453, 22, 22),
+        IntRect(121, 258, 22, 22),
+        IntRect(121, 282, 22, 22),
+    };
+    for (int i = 0; i < 4; i++)
+    {
+        txMedals[i] = new Texture();
+        txMedals[i]->loadFromImage(tileset, medalsRects[i]);
+    }
 }
 
 GameOver::~GameOver()
@@ -69,6 +81,8 @@ GameOver::~GameOver()
     free(spShareButton);
     for (auto number : spScoreNumbers) free(number);
     for (int i = 0; i < 10; i++) free(txScoreNumbers[i]);
+    for (int i = 0; i < 4; i++) free(txMedals[i]);
+    free(spMedal);
 }
 
 void GameOver::draw(RenderWindow* window)
@@ -79,6 +93,7 @@ void GameOver::draw(RenderWindow* window)
     window->draw(*spScore);
     window->draw(*spOkButton);
     window->draw(*spShareButton);
+    window->draw(*spMedal);
     for (auto number : spScoreNumbers)
         window->draw(*number);
 } 
@@ -131,6 +146,19 @@ void GameOver::start(int points)
 
         spScoreNumbers.push_back(spNumber);
     }
+
+    int medalIndex = 0;
+    
+    if (points > 5)
+        medalIndex++;
+    if (points > 10)
+        medalIndex++;
+    if (points > 20)
+        medalIndex++;
+
+    spMedal = new Sprite(*txMedals[medalIndex]);
+    spMedal->setPosition(scoreBounds.left + 13 * scale, scoreBounds.top + 21 * scale);
+    spMedal->setScale(Vector2f(scale, scale));
 }
 
 void GameOver::handleEvent(Event event, RenderWindow* window)
@@ -181,6 +209,8 @@ void GameOver::update()
 
         for (auto number : spScoreNumbers)
             number->move(0, -1);
+
+        spMedal->move(0, -1);
     }
     if (i > 0) return;
 

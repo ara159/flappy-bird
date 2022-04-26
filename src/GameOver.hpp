@@ -18,7 +18,9 @@ private:
     Texture* txScore;
     Sprite* spScore;
     Texture* txScoreNumbers[10];
+    Texture* txMedals[4];
     std::vector<Sprite*> spScoreNumbers;
+    Sprite* spMedal;
     bool started;
     int points;
 public:

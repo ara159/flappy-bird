@@ -10,8 +10,8 @@ using namespace sf;
 class Player : public MyGameObject
 {
 private:
-    SoundBuffer* soundBuffer;
-    Sound* sound;
+    SoundBuffer* soundBuffer[4];
+    Sound* sound[4];
     Texture* txPlayer[9];
     Sprite* spPlayer;
     Vector2f velocity;
@@ -34,6 +34,7 @@ public:
     FloatRect getGlobalBounds();
     void collideWithGround();
     void collideWithTube();
+    void collideWithCheckpoint();
     void start();
     void handleEvent(Event, RenderWindow*);
     void setAnimation(bool);

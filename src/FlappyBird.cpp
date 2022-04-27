@@ -1,4 +1,4 @@
-#include "FlapBird.hpp"
+#include "FlappyBird.hpp"
 #include <iostream>
 
 FBScreens FlapBird::screen = INIT;
@@ -144,6 +144,7 @@ void FlapBird::checkCollisions()
         {
             points->update();
             checkpoint->collideWithPlayer();
+            player->collideWithCheckpoint();
         }
     }
 

@@ -1,5 +1,5 @@
-#ifndef FLAP_BIRD_H
-#define FLAP_BIRD_H 1
+#ifndef FLAPPY_BIRD_H
+#define FLAPPY_BIRD_H 1
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Player.hpp"

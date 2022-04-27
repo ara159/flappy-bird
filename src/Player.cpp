@@ -17,16 +17,23 @@ Player::Player() : MyGameObject()
     initialOffset.x = screenSize.x * 0.5;
     initialOffset.y = screenSize.y * 0.5;
 
-    soundBuffer = new SoundBuffer();
-    soundBuffer->loadFromFile("flappy-birdy-audios.wav");
-    sound = new Sound(*soundBuffer);
+    for (int i = 0; i < 4; i++)
+    {
+        soundBuffer[i] = new SoundBuffer();
+        soundBuffer[i]->loadFromFile("audios/" + std::to_string(i + 1) + ".wav");
+        sound[i] = new Sound(*soundBuffer[i]);
+    }
 }
 
 Player::~Player() {
+    for (int i = 0; i < 4; i++)
+    {
+        free(soundBuffer[i]);
+        free(sound[i]);
+    }
+    
     free(spPlayer);
-    free(soundBuffer);
-    free(sound);
-
+    
     for (int i = 0; i < 3; i++)
     {
         free(txPlayer[i]);
@@ -74,16 +81,28 @@ FloatRect Player::getGlobalBounds()
 
 void Player::collideWithGround()
 {
+    if (collGround) return;
     collGround = true;
     animation = false;
     status.toScreen = GAMEOVER;
+    if (!collTube)
+    {
+        sound[3]->play();
+    }
 }
 
 void Player::collideWithTube()
 {
+    if (collTube) return;
     collTube = true;
     animation = false;
     status.toScreen = GAMEOVER;
+    sound[2]->play();
+}
+
+void Player::collideWithCheckpoint()
+{
+    sound[1]->play();
 }
 
 void Player::start()
@@ -110,5 +129,6 @@ void Player::handleEvent(Event event, RenderWindow* window)
         if (collGround || collTube || spPlayer->getPosition().y < (-20 * scale)) return;
         velocity.y = impulse;
         spPlayer->setRotation(-45);
+        sound[0]->play();
     }
 }

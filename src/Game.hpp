@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H 1
 #include <SFML/Graphics.hpp>
-#include "FlapBird.hpp"
+#include "FlappyBird.hpp"
 #include "MyGameObject.hpp"
 
 using namespace sf;

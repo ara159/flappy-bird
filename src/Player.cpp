@@ -1,15 +1,12 @@
 #include "Player.hpp"
 #include <iostream>
 #include <math.h>
-#include "TextureFactory.hpp"
 
 Player::Player() : MyGameObject()
-{
-    TextureFactory tx = TextureFactory();
-    
+{   
     for (int i = 0; i < 9; i++)
     {
-        txPlayer[i] = tx.player(i);
+        txPlayer[i] = txFactory.player(i);
     }
 
     spPlayer = new Sprite();
@@ -110,7 +107,7 @@ void Player::handleEvent(Event event, RenderWindow* window)
 {
     if (event.type == Event::MouseButtonPressed)
     {
-        if (collGround || collTube) return;
+        if (collGround || collTube || spPlayer->getPosition().y < (-20 * scale)) return;
         velocity.y = impulse;
         spPlayer->setRotation(-45);
     }

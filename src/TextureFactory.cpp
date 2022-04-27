@@ -1,4 +1,5 @@
 #include "TextureFactory.hpp"
+#include <iostream>
 
 TextureFactory::TextureFactory()
 {

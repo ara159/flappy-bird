@@ -1,12 +1,8 @@
 #include "Background.hpp"
-#include "TextureFactory.hpp"
 
 Background::Background() : MyGameObject() {
-    TextureFactory tx = TextureFactory();
-    
-    txBackground[0] = tx.background1();
-    txBackground[1] = tx.background2();
-
+    txBackground[0] = txFactory.background1();
+    txBackground[1] = txFactory.background2();
     spBackground = new Sprite();
     spBackground->setScale(sf::Vector2f(scale, scale));
     spBackground->setPosition(0, 0);

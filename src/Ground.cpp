@@ -1,10 +1,8 @@
 #include "Ground.hpp"
-#include "TextureFactory.hpp"
 
 Ground::Ground() : MyGameObject()
 {
-    TextureFactory tx = TextureFactory();
-    txGround = tx.ground();
+    txGround = txFactory.ground();
     spGround = new Sprite(*txGround);
     spGround->setScale(sf::Vector2f(scale, scale));
     spGround->setPosition(0, 228 * scale);

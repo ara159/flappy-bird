@@ -1,5 +1,5 @@
 #ifndef PAUSE_BUTTON_H
-#define PAUSE_BUTTON 1
+#define PAUSE_BUTTON_H 1
 #include <SFML/Graphics.hpp>
 #include "MyGameObject.hpp"
 

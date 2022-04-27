@@ -1,48 +1,41 @@
 #include "GameOver.hpp"
-#include "TextureFactory.hpp"
 
 GameOver::GameOver()
 {
-    TextureFactory tx = TextureFactory();
-    
-    txGameOverPhrase = tx.gameOverPhrase();
-
     rect = new RectangleShape(Vector2f(screenSize));
     rect->setPosition(0, 0);
 
     started = false;
 
-    txGameOverPhrase = tx.gameOverPhrase();
+    txGameOverPhrase = txFactory.gameOverPhrase();
+    txOkButton = txFactory.gameOverOkButton();
+    txShareButton = txFactory.gameOverShareButton();
+    txScore = txFactory.gameOverScore();
+
     spGameOverPhrase = new Sprite(*txGameOverPhrase);
     spGameOverPhrase->setOrigin(Vector2f(96/2, 0));
     spGameOverPhrase->setScale(Vector2f(scale, scale));
 
-    txOkButton = tx.gameOverOkButton();
-
     spOkButton = new Sprite(*txOkButton);
     spOkButton->setOrigin(Vector2f(40/2, 0));
     spOkButton->setScale(Vector2f(scale, scale));
-    
-    txShareButton = tx.gameOverShareButton();
 
     spShareButton = new Sprite(*txShareButton);
     spShareButton->setOrigin(Vector2f(40/2, 0));
     spShareButton->setScale(Vector2f(scale, scale));
     
-    txScore = tx.gameOverScore();
-
     spScore = new Sprite(*txScore);
     spScore->setOrigin(Vector2f(113/2, 0));
     spScore->setScale(Vector2f(scale, scale));
 
     for (int i = 0; i < 10; i++)
     {
-        txScoreNumbers[i] = tx.gameOverScoreNumber(i);
+        txScoreNumbers[i] = txFactory.gameOverScoreNumber(i);
     }
 
     for (int i = 0; i < 4; i++)
     {
-        txMedals[i] = tx.gameOverMedal(i);
+        txMedals[i] = txFactory.gameOverMedal(i);
     }
 }
 

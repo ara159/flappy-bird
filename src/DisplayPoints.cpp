@@ -1,12 +1,10 @@
 #include "DisplayPoints.hpp"
-#include "TextureFactory.hpp"
 
 DisplayPoints::DisplayPoints() : MyGameObject()
 {
-    TextureFactory tx = TextureFactory();
     for (int i = 0; i < 10; i++)
     {
-        txNumbers[i] = tx.pointNumber(i);
+        txNumbers[i] = txFactory.pointNumber(i);
     }
 }
 

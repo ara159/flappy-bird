@@ -1,6 +1,7 @@
 #include "MyGameObject.hpp"
 
 GameStats MyGameObject::status = GameStats();
+TextureFactory MyGameObject::txFactory = TextureFactory();
 
 MyGameObject::MyGameObject()
 {

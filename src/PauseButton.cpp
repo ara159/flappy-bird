@@ -1,11 +1,9 @@
 #include "PauseButton.hpp"
 #include <iostream>
-#include "TextureFactory.hpp"
 
 PauseButton::PauseButton() : MyGameObject()
 {
-    TextureFactory tx = TextureFactory();
-    txPauseButton = tx.pauseButton();
+    txPauseButton = txFactory.pauseButton();
     
     spPauseButton = new Sprite();
     spPauseButton->setTexture(*txPauseButton);

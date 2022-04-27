@@ -2,6 +2,7 @@
 #define MY_GAME_OBJECT_H 1
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "TextureFactory.hpp"
 
 using namespace sf;
 
@@ -21,6 +22,7 @@ protected:
     Vector2i screenSize;
 public:
     static GameStats status;
+    static TextureFactory txFactory;
     MyGameObject();
     ~MyGameObject();
     void setScale(float scale);

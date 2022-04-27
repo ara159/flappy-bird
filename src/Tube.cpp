@@ -1,14 +1,12 @@
 #include "Tube.hpp"
 #include <iostream>
-#include "TextureFactory.hpp"
 
 Tube::Tube(bool upsidedown, int spaceBetween, int offset) : MyGameObject()
 {
     offset = offset * scale;
     spaceBetween = spaceBetween * scale;
     
-    TextureFactory tx = TextureFactory();
-    txTube = tx.tube(upsidedown ? 1 : 0);
+    txTube = txFactory.tube(upsidedown ? 1 : 0);
     spTube = new Sprite(*txTube);
     spTube->setScale(sf::Vector2f(scale, scale));
     spTube->setOrigin(sf::Vector2f(txTube->getSize().x / 2, 0));

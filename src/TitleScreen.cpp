@@ -1,13 +1,10 @@
 #include "TitleScreen.hpp"
-#include "TextureFactory.hpp"
 
 TitleScreen::TitleScreen() : MyGameObject()
 {
-    TextureFactory tx = TextureFactory();
-    
-    txTitle = tx.titlePhrase();
-    txBtnStart = tx.titleStartButton();
-    txBtnRank = tx.titleRankButton();
+    txTitle = txFactory.titlePhrase();
+    txBtnStart = txFactory.titleStartButton();
+    txBtnRank = txFactory.titleRankButton();
 
     spTitle = new Sprite(*txTitle);
     spBtnStart = new Sprite(*txBtnStart);

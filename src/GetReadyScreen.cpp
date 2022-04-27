@@ -1,11 +1,9 @@
 #include "GetReadyScreen.hpp"
-#include "TextureFactory.hpp"
 
 GetReadyScreen::GetReadyScreen() : MyGameObject()
 {
-    TextureFactory tx = TextureFactory();
-    txGetReady = tx.getReadyPhrase();
-    txInstructions = tx.getReadyInstructions();
+    txGetReady = txFactory.getReadyPhrase();
+    txInstructions = txFactory.getReadyInstructions();
 }
 
 GetReadyScreen::~GetReadyScreen()

@@ -1,13 +1,11 @@
 #include "PauseButton.hpp"
 #include <iostream>
+#include "TextureFactory.hpp"
 
 PauseButton::PauseButton() : MyGameObject()
 {
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
-    
-    txPauseButton = new Texture();
-    txPauseButton->loadFromImage(tileset, IntRect(121, 306, 13, 14));
+    TextureFactory tx = TextureFactory();
+    txPauseButton = tx.pauseButton();
     
     spPauseButton = new Sprite();
     spPauseButton->setTexture(*txPauseButton);

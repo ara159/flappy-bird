@@ -1,15 +1,11 @@
 #include "GetReadyScreen.hpp"
+#include "TextureFactory.hpp"
 
 GetReadyScreen::GetReadyScreen() : MyGameObject()
 {
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
-    
-    txGetReady = new Texture();
-    txGetReady->loadFromImage(tileset, IntRect(295, 59, 92, 25));
-
-    txInstructions = new Texture();
-    txInstructions->loadFromImage(tileset, IntRect(292, 91, 57, 49));
+    TextureFactory tx = TextureFactory();
+    txGetReady = tx.getReadyPhrase();
+    txInstructions = tx.getReadyInstructions();
 }
 
 GetReadyScreen::~GetReadyScreen()

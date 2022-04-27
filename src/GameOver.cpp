@@ -1,71 +1,48 @@
 #include "GameOver.hpp"
+#include "TextureFactory.hpp"
 
 GameOver::GameOver()
 {
-    this->points = points;
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
+    TextureFactory tx = TextureFactory();
+    
+    txGameOverPhrase = tx.gameOverPhrase();
 
     rect = new RectangleShape(Vector2f(screenSize));
     rect->setPosition(0, 0);
+
     started = false;
 
-    txGameOverPhrase = new Texture();
-    txGameOverPhrase->loadFromImage(tileset, IntRect(395, 59, 96, 21));
+    txGameOverPhrase = tx.gameOverPhrase();
     spGameOverPhrase = new Sprite(*txGameOverPhrase);
     spGameOverPhrase->setOrigin(Vector2f(96/2, 0));
     spGameOverPhrase->setScale(Vector2f(scale, scale));
 
-    txOkButton = new Texture();
-    txOkButton->loadFromImage(tileset, IntRect(462, 42, 40, 14));
+    txOkButton = tx.gameOverOkButton();
 
     spOkButton = new Sprite(*txOkButton);
     spOkButton->setOrigin(Vector2f(40/2, 0));
     spOkButton->setScale(Vector2f(scale, scale));
     
-    txShareButton = new Texture();
-    txShareButton->loadFromImage(tileset, IntRect(292, 142, 40, 14));
+    txShareButton = tx.gameOverShareButton();
 
     spShareButton = new Sprite(*txShareButton);
     spShareButton->setOrigin(Vector2f(40/2, 0));
     spShareButton->setScale(Vector2f(scale, scale));
     
-    txScore = new Texture();
-    txScore->loadFromImage(tileset, IntRect(3, 259, 113, 57));
+    txScore = tx.gameOverScore();
 
     spScore = new Sprite(*txScore);
     spScore->setOrigin(Vector2f(113/2, 0));
     spScore->setScale(Vector2f(scale, scale));
 
-    IntRect numbersRects[10] = {
-        IntRect(137, 306, 7, 10),
-        IntRect(139, 477, 5, 10),
-        IntRect(137, 489, 7, 10),
-        IntRect(131, 501, 7, 10),
-        IntRect(502, 0, 7, 10),
-        IntRect(502, 12, 7, 10),
-        IntRect(505, 26, 7, 10),
-        IntRect(505, 42, 7, 10),
-        IntRect(293, 242, 7, 10),
-        IntRect(331, 206, 7, 10),
-    };
-
     for (int i = 0; i < 10; i++)
     {
-        txScoreNumbers[i] = new Texture();
-        txScoreNumbers[i]->loadFromImage(tileset, numbersRects[i]);
+        txScoreNumbers[i] = tx.gameOverScoreNumber(i);
     }
 
-    IntRect medalsRects[4] = {
-        IntRect(112, 477, 22, 22),
-        IntRect(112, 453, 22, 22),
-        IntRect(121, 258, 22, 22),
-        IntRect(121, 282, 22, 22),
-    };
     for (int i = 0; i < 4; i++)
     {
-        txMedals[i] = new Texture();
-        txMedals[i]->loadFromImage(tileset, medalsRects[i]);
+        txMedals[i] = tx.gameOverMedal(i);
     }
 }
 

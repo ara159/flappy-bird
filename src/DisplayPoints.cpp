@@ -1,27 +1,12 @@
 #include "DisplayPoints.hpp"
+#include "TextureFactory.hpp"
 
 DisplayPoints::DisplayPoints() : MyGameObject()
 {
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
-
-    IntRect positions[10] = {
-        IntRect(496, 60, 12, 18),
-        IntRect(136, 455, 8, 18),
-        IntRect(292, 160, 12, 18),
-        IntRect(306, 160, 12, 18),
-        IntRect(320, 160, 12, 18),
-        IntRect(334, 160, 12, 18),
-        IntRect(292, 184, 12, 18),
-        IntRect(306, 184, 12, 18),
-        IntRect(320, 184, 12, 18),
-        IntRect(334, 184, 12, 18),
-    };
-
+    TextureFactory tx = TextureFactory();
     for (int i = 0; i < 10; i++)
     {
-        txNumbers[i] = new Texture();
-        txNumbers[i]->loadFromImage(tileset, positions[i]); 
+        txNumbers[i] = tx.pointNumber(i);
     }
 }
 

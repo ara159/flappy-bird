@@ -1,18 +1,13 @@
 #include "TitleScreen.hpp"
+#include "TextureFactory.hpp"
 
 TitleScreen::TitleScreen() : MyGameObject()
 {
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
-
-    txTitle = new Texture();
-    txTitle->loadFromImage(tileset, IntRect(351, 91, 89, 24));
+    TextureFactory tx = TextureFactory();
     
-    txBtnStart = new Texture();
-    txBtnStart->loadFromImage(tileset, IntRect(354, 118, 52, 29));
-    
-    txBtnRank = new Texture();
-    txBtnRank->loadFromImage(tileset, IntRect(414, 118, 52, 29));
+    txTitle = tx.titlePhrase();
+    txBtnStart = tx.titleStartButton();
+    txBtnRank = tx.titleRankButton();
 
     spTitle = new Sprite(*txTitle);
     spBtnStart = new Sprite(*txBtnStart);

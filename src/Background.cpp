@@ -1,17 +1,11 @@
 #include "Background.hpp"
+#include "TextureFactory.hpp"
 
 Background::Background() : MyGameObject() {
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
+    TextureFactory tx = TextureFactory();
     
-    for (int i = 0; i < 2; i++)
-    {
-        txBackground[i] = new Texture();
-        txBackground[i]->setRepeated(true);
-    }
-
-    txBackground[0]->loadFromImage(tileset, IntRect(0, 0, 144, 256));
-    txBackground[1]->loadFromImage(tileset, IntRect(146, 0, 144, 256));
+    txBackground[0] = tx.background1();
+    txBackground[1] = tx.background2();
 
     spBackground = new Sprite();
     spBackground->setScale(sf::Vector2f(scale, scale));

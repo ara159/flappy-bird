@@ -1,19 +1,14 @@
 #include "Ground.hpp"
+#include "TextureFactory.hpp"
 
 Ground::Ground() : MyGameObject()
 {
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
-
-    txGround = new Texture();
-    txGround->loadFromImage(tileset, IntRect(292, 0, 168, 56));
-    txGround->setRepeated(true);
-
+    TextureFactory tx = TextureFactory();
+    txGround = tx.ground();
     spGround = new Sprite(*txGround);
     spGround->setScale(sf::Vector2f(scale, scale));
     spGround->setPosition(0, 228 * scale);
     int p = spGround->getGlobalBounds().height;
-
     animation = true;
 }
 

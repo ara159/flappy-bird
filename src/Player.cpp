@@ -1,31 +1,16 @@
 #include "Player.hpp"
 #include <iostream>
 #include <math.h>
+#include "TextureFactory.hpp"
 
 Player::Player() : MyGameObject()
 {
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
-
+    TextureFactory tx = TextureFactory();
+    
     for (int i = 0; i < 9; i++)
     {
-        txPlayer[i] = new Texture();
+        txPlayer[i] = tx.player(i);
     }
-
-    // skin 1
-    txPlayer[0]->loadFromImage(tileset, IntRect(3, 491, 17, 12));
-    txPlayer[1]->loadFromImage(tileset, IntRect(31, 491, 17, 12));
-    txPlayer[2]->loadFromImage(tileset, IntRect(59, 491, 17, 12));
-
-    // skin 2
-    txPlayer[3]->loadFromImage(tileset, IntRect(87, 491, 17, 12));
-    txPlayer[4]->loadFromImage(tileset, IntRect(115, 329, 17, 12));
-    txPlayer[5]->loadFromImage(tileset, IntRect(115, 355, 17, 12));
-
-    // skin 3
-    txPlayer[6]->loadFromImage(tileset, IntRect(115, 381, 17, 12));
-    txPlayer[7]->loadFromImage(tileset, IntRect(115, 407, 17, 12));
-    txPlayer[8]->loadFromImage(tileset, IntRect(115, 433, 17, 12));
 
     spPlayer = new Sprite();
 

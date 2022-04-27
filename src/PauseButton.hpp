@@ -10,6 +10,7 @@ class PauseButton : public MyGameObject
 private:
     Texture* txPauseButton;
     Sprite* spPauseButton;
+    bool paused;
     void init();
 public:
     PauseButton();

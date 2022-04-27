@@ -5,13 +5,15 @@
 
 using namespace sf;
 
+enum FBScreens { INIT, TITLE, GET_READY, GAMEPLAY, GAMEOVER, PAUSE, NONE };
+
 struct GameStats
 {
     bool paused = false;
     bool gameOver = false;
     int velocity = 0;
+    FBScreens toScreen = NONE;
 };
-
 
 class MyGameObject
 {

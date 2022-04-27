@@ -87,7 +87,6 @@ GameOver::~GameOver()
 
 void GameOver::draw(RenderWindow* window)
 {
-    if (!started) return;
     window->draw(*rect);
     window->draw(*spGameOverPhrase);
     window->draw(*spScore);
@@ -101,9 +100,12 @@ void GameOver::draw(RenderWindow* window)
 void GameOver::start(int points)
 {
     if (started) return;
+
     this->points = points;
+
     status.gameOver = true;
     started = true;
+    
     cooldownBegin = 64;
     cooldownEnd = 64;
     buttonActive = false;
@@ -123,7 +125,9 @@ void GameOver::start(int points)
     spShareButton->move(40 * 2/3 * scale, 0);
     spShareButton->setColor(Color::Transparent);
 
-    for (auto number : spScoreNumbers) free(number);
+    for (auto number : spScoreNumbers)
+        free(number);
+    
     spScoreNumbers.clear();
     
     std::string strPoints = std::to_string(points);
@@ -171,7 +175,7 @@ void GameOver::handleEvent(Event event, RenderWindow* window)
 
         if (pauseBtnBounds.intersects(FloatRect(clickPosition.x, clickPosition.y, 1, 1)))
         {
-            status.gameOver = false;
+            status.toScreen = GET_READY;
             started = false;
         }
     }
@@ -179,7 +183,6 @@ void GameOver::handleEvent(Event event, RenderWindow* window)
 
 void GameOver::update()
 {
-    if (!started) return;
     Color color;
     Vector2f pos;
 

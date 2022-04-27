@@ -22,11 +22,12 @@ void PauseButton::init() {
     spPauseButton->setTexture(*txPauseButton);
     spPauseButton->setPosition(20, 20);
     spPauseButton->setScale(Vector2f(scale, scale));
+    
+    paused = false;
 }
 
 void PauseButton::draw(RenderWindow * window)
 {
-    
     window->draw(*spPauseButton);
 }
 
@@ -39,7 +40,11 @@ void PauseButton::handleEvent(Event event, RenderWindow* window)
 
         if (pauseBtnBounds.intersects(FloatRect(clickPosition.x, clickPosition.y, 1, 1)))
         {
-            status.paused = !status.paused;
+            paused = !paused;
+            if (paused)
+                status.toScreen = PAUSE;
+            else
+                status.toScreen = GAMEPLAY;
         }
     }
 }

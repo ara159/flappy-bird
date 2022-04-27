@@ -55,9 +55,14 @@ void Player::init() {
     sound = new Sound(*soundBuffer);
 }
 
+void Player::setAnimation(bool animation)
+{
+    this->animation = animation;
+}
+
 void Player::draw(RenderWindow* window)
 {
-    if (!status.paused && !collGround && animationCooldown-- == 0)
+    if (animation && animationCooldown-- == 0)
     {
         animationCooldown = animationCooldownMax;
         currentTx = (currentTx + 1) % 3;
@@ -92,14 +97,15 @@ FloatRect Player::getGlobalBounds()
 void Player::collideWithGround()
 {
     collGround = true;
+    animation = false;
+    status.toScreen = GAMEOVER;
 }
 
 void Player::collideWithTube()
 {
-    if (collTube) return;
-    // sound->setPlayingOffset(Time());
-    // sound->play();
     collTube = true;
+    animation = false;
+    status.toScreen = GAMEOVER;
 }
 
 void Player::start()
@@ -116,6 +122,7 @@ void Player::start()
     collGround = false;
     collTube = false;
     animationCooldown = animationCooldownMax;
+    animation = true;
 }
 
 void Player::handleEvent(Event event, RenderWindow* window)

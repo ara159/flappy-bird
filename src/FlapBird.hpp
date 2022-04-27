@@ -11,10 +11,10 @@
 #include "DisplayPoints.hpp"
 #include "PauseButton.hpp"
 #include "GameOver.hpp"
+#include "TitleScreen.hpp"
+#include "GetReadyScreen.hpp"
 
 using namespace sf;
-
-enum FBScreens { INIT, GET_READY, GAMEPLAY, GAMEOVER };
 
 class FlapBird : public MyGameObject
 {
@@ -27,15 +27,15 @@ private:
     DisplayPoints* points;
     TubeFactory* tubeFactory;
     GameOver* gameOverScreen;
-    Texture* txGetReady;
-    Texture* txInstructions;
+    TitleScreen* titleScreen;
+    GetReadyScreen* getReadyScreen;
     void checkCollisions();
     void updateObjects();
-    void changeScreen(FBScreens screen);
     bool isScreen(FBScreens screen);
 public:
     FlapBird();
     ~FlapBird();
+    void changeScreen(FBScreens screen);
     void start();
     void update(RenderWindow * window);
     void draw(RenderWindow * window);

@@ -25,6 +25,7 @@ private:
     float gravity = 0.15;
     float impulse = -3;
     Vector2i initialOffset;
+    bool animation = true;
     void init();
 public:
     Player();
@@ -36,6 +37,7 @@ public:
     void collideWithTube();
     void start();
     void handleEvent(Event, RenderWindow*);
+    void setAnimation(bool);
 };
 
 #endif

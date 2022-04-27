@@ -1,7 +1,7 @@
 #include "FlapBird.hpp"
 #include <iostream>
 
-FBScreens FlapBird::screen = FBScreens::INIT;
+FBScreens FlapBird::screen = INIT;
 
 FlapBird::FlapBird() : MyGameObject()
 {
@@ -12,38 +12,44 @@ FlapBird::FlapBird() : MyGameObject()
     pauseButton = new PauseButton();
     tubeFactory = new TubeFactory();
     gameOverScreen = new GameOver();
-
-    Image tileset = Image();
-    tileset.loadFromFile("flappy-birdy-sprites.png");
-    
-    txGetReady = new Texture();
-    txGetReady->loadFromImage(tileset, IntRect(295, 59, 92, 25));
-
-    txInstructions = new Texture();
-    txInstructions->loadFromImage(tileset, IntRect(292, 91, 57, 49));
+    titleScreen = new TitleScreen();
+    getReadyScreen = new GetReadyScreen();
 }
 
 void FlapBird::changeScreen(FBScreens screen)
 {
-    if (isScreen(FBScreens::INIT) && screen == FBScreens::GET_READY)
+    if (isScreen(INIT) && screen == TITLE)
+    {
+        status.velocity = 1;
+        titleScreen->start();
+    }
+    if (isScreen(TITLE) && screen == GET_READY)
+    {
+        getReadyScreen->start();
+    }
+    if (isScreen(GET_READY) && screen == GAMEPLAY)
     {
         status.velocity = 1;
     }
-    if (isScreen(FBScreens::GET_READY) && screen == FBScreens::GAMEPLAY)
-    {
-        status.velocity = 1;
-    }
-    if (isScreen(FBScreens::GAMEPLAY) && screen == FBScreens::GAMEOVER)
+    if (isScreen(GAMEPLAY) && screen == GAMEOVER)
     {
         status.velocity = 0;
         gameOverScreen->start(points->getPoints());
     }
-    if (isScreen(FBScreens::GAMEOVER) && screen == FBScreens::GET_READY)
+    if (isScreen(GAMEOVER) && screen == GET_READY)
     {
         status.velocity = 1;
         player->start();
         tubeFactory->start();
         points->start();
+    }
+    if (isScreen(GAMEPLAY) && screen == PAUSE)
+    {
+        player->setAnimation(false);
+    }
+    if (isScreen(PAUSE) && screen == GAMEPLAY)
+    {
+        player->setAnimation(true);
     }
     this->screen = screen;
 }
@@ -62,13 +68,13 @@ FlapBird::~FlapBird()
     free(points);
     free(tubeFactory);
     free(gameOverScreen);
-    free(txGetReady);
-    free(txInstructions);
+    free(titleScreen);
+    free(getReadyScreen);
 }
 
 void FlapBird::start()
 {
-    changeScreen(FBScreens::GET_READY);
+    changeScreen(TITLE);
     player->start();
     background->start();
     points->start();
@@ -77,9 +83,17 @@ void FlapBird::start()
 
 void FlapBird::update(RenderWindow * window)
 {
-    if (status.paused) return;   
-    checkCollisions();
-    updateObjects();
+    if (status.toScreen != NONE)
+    {
+        changeScreen(status.toScreen);
+        status.toScreen = NONE;
+    }
+
+    if (!isScreen(PAUSE))
+    {
+        checkCollisions();
+        updateObjects();
+    }
 }
 
 void FlapBird::updateObjects()
@@ -87,15 +101,24 @@ void FlapBird::updateObjects()
     background->update();
     ground->update();
     
-    if (isScreen(FBScreens::GAMEPLAY))
+    if (isScreen(GET_READY))
+    {
+        getReadyScreen->update();
+    }
+
+    if (isScreen(GAMEPLAY))
     {
         player->update();
         tubeFactory->update();
     }
-    if (isScreen(FBScreens::GAMEOVER))
+    if (isScreen(GAMEOVER))
     {
         player->update();
         gameOverScreen->update();
+    }
+    if (isScreen(TITLE))
+    {
+        titleScreen->update();
     }
 }
 
@@ -108,7 +131,6 @@ void FlapBird::checkCollisions()
         if (p.intersects(tube->getGlobalBounds()))
         {
             player->collideWithTube();
-            changeScreen(FBScreens::GAMEOVER);
             break;
         }
     }
@@ -125,7 +147,6 @@ void FlapBird::checkCollisions()
     if (p.intersects(ground->getGlobalBounds()))
     {
         player->collideWithGround();
-        changeScreen(FBScreens::GAMEOVER);
     }
 }
 
@@ -134,30 +155,25 @@ void FlapBird::draw(RenderWindow * window)
     background->draw(window);
     tubeFactory->draw(window);
     ground->draw(window);
-    player->draw(window);
     
-    if (isScreen(FBScreens::GET_READY) || isScreen(FBScreens::GAMEPLAY))
+    if (isScreen(GET_READY) || isScreen(GAMEPLAY) || isScreen(PAUSE))
     {
         points->draw(window);
         pauseButton->draw(window);
+        player->draw(window);
     }
-    if (isScreen(FBScreens::GET_READY))
+    if (isScreen(GET_READY))
     {
-        Sprite spGetReady(*txGetReady);
-        spGetReady.setOrigin(spGetReady.getGlobalBounds().width/2, 0);
-        spGetReady.setScale(Vector2f(scale, scale));
-        spGetReady.setPosition(screenSize.x/2, 50 * scale);
-        window->draw(spGetReady);
-
-        Sprite spInstructions(*txInstructions);
-        spInstructions.setOrigin(spInstructions.getGlobalBounds().width/2, 0);
-        spInstructions.setScale(Vector2f(scale, scale));
-        spInstructions.setPosition(screenSize.x/2, screenSize.y/2 * 1.25);
-        window->draw(spInstructions);
+        getReadyScreen->draw(window);
     }
-    if (isScreen(FBScreens::GAMEOVER))
+    if (isScreen(GAMEOVER))
     {
+        player->draw(window);
         gameOverScreen->draw(window);
+    }
+    if (isScreen(TITLE))
+    {
+        titleScreen->draw(window);
     }
 }
 
@@ -171,33 +187,34 @@ void FlapBird::eventHandler(RenderWindow * window)
         {
             window->close();
         }
-        
-        auto gameOver = status.gameOver;
 
-        if (status.gameOver)
+        if (isScreen(GAMEOVER))
         {
             gameOverScreen->handleEvent(event, window);
         }
-        if (gameOver && !status.gameOver)
-        {
-            changeScreen(FBScreens::GET_READY);
-            return;
-        }
 
-        auto paused = status.paused;
-
-        if (isScreen(FBScreens::GAMEPLAY))
+        if (isScreen(GAMEPLAY) || isScreen(PAUSE))
         {
             pauseButton->handleEvent(event, window);
         }
-        if (isScreen(FBScreens::GET_READY))
+
+        if (isScreen(GET_READY))
         {
-            if (event.type == Event::MouseButtonPressed)
-                changeScreen(FBScreens::GAMEPLAY);
-        }
-        if (!paused && !status.paused) // check if is paused before and after handle pause button
-        {
+            getReadyScreen->handleEvent(event, window);
             player->handleEvent(event, window);
+        }
+        
+        if (isScreen(TITLE))
+        {
+            titleScreen->handleEvent(event, window);
+        }
+
+        if (status.toScreen == NONE)
+        {
+            if (isScreen(GAMEPLAY))
+            {
+                player->handleEvent(event, window);
+            }
         }
     }
 }

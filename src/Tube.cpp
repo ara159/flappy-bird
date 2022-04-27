@@ -3,30 +3,30 @@
 
 Tube::Tube(bool upsidedown, int spaceBetween, int offset) : MyGameObject()
 {
-    this->upsidedown = upsidedown;
-    this->offset = offset * scale;
-    this->spaceBetween = spaceBetween * scale;
-    init();
-}
-
-void Tube::init() {
+    offset = offset * scale;
+    spaceBetween = spaceBetween * scale;
+    
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
     
     txTube = new Texture();
 
-    if (!upsidedown)
+    if (! upsidedown)
+    {
         txTube->loadFromImage(tileset, IntRect(84, 323, 26, 160));
+    }
     else
+    {
         txTube->loadFromImage(tileset, IntRect(56, 323, 26, 160));
+    }
 
     spTube = new Sprite(*txTube);
     spTube->setScale(sf::Vector2f(scale, scale));
-    spTube->setOrigin(sf::Vector2f(txTube->getSize().x/2, 0));
+    spTube->setOrigin(sf::Vector2f(txTube->getSize().x / 2, 0));
     
     int spawnX = screenSize.x + 100 * scale;
     
-    if (!upsidedown)
+    if (! upsidedown)
     {
         int minY = 68 * scale;
         spTube->setPosition(spawnX, minY);
@@ -36,8 +36,9 @@ void Tube::init() {
     {
         int minY = 0;
         spTube->setPosition(spawnX, minY);
-        spTube->move(0, -spaceBetween);
+        spTube->move(0, - spaceBetween);
     }
+    
     spTube->move(0, offset);
 }
 
@@ -54,8 +55,11 @@ void Tube::draw(RenderWindow* window)
 
 void Tube::update()
 {
-    if (!active) return;
-    spTube->move(status.velocity * scale * -1, 0);
+    if (!active)
+        return;
+    
+    spTube->move(1 * scale * -1, 0);
+    
     if (spTube->getPosition().x < -100)
     {
         active = false;

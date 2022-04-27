@@ -9,13 +9,12 @@ using namespace sf;
 class Checkpoint : MyGameObject
 {
 private:
-    void init();
     RectangleShape* collRect;
     bool active = true;
 public:
     Checkpoint();
     ~Checkpoint();
-    void update(float velocity);
+    void update();
     void draw(RenderWindow* window);
     bool isActive();
     FloatRect getGlobalBounds();

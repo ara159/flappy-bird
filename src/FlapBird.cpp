@@ -20,7 +20,8 @@ void FlapBird::changeScreen(FBScreens screen)
 {
     if (isScreen(INIT) && screen == TITLE)
     {
-        status.velocity = 1;
+        background->setAnimation(true);
+        ground->setAnimation(true);
         titleScreen->start();
     }
     if (isScreen(TITLE) && screen == GET_READY)
@@ -29,26 +30,32 @@ void FlapBird::changeScreen(FBScreens screen)
     }
     if (isScreen(GET_READY) && screen == GAMEPLAY)
     {
-        status.velocity = 1;
+        
     }
     if (isScreen(GAMEPLAY) && screen == GAMEOVER)
     {
-        status.velocity = 0;
+        background->setAnimation(false);
+        ground->setAnimation(false);
         gameOverScreen->start(points->getPoints());
     }
     if (isScreen(GAMEOVER) && screen == GET_READY)
     {
-        status.velocity = 1;
+        background->setAnimation(true);
+        ground->setAnimation(true);
         player->start();
         tubeFactory->start();
         points->start();
     }
     if (isScreen(GAMEPLAY) && screen == PAUSE)
     {
+        background->setAnimation(false);
+        ground->setAnimation(false);
         player->setAnimation(false);
     }
     if (isScreen(PAUSE) && screen == GAMEPLAY)
     {
+        background->setAnimation(true);
+        ground->setAnimation(true);
         player->setAnimation(true);
     }
     this->screen = screen;
@@ -98,9 +105,6 @@ void FlapBird::update(RenderWindow * window)
 
 void FlapBird::updateObjects()
 {
-    background->update();
-    ground->update();
-    
     if (isScreen(GET_READY))
     {
         getReadyScreen->update();

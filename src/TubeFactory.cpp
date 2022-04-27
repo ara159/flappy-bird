@@ -3,7 +3,6 @@
 
 TubeFactory::TubeFactory() : MyGameObject()
 {
-    init();
 }
 
 TubeFactory::~TubeFactory()
@@ -21,10 +20,6 @@ void TubeFactory::clear()
     
     tubes.clear();
     checkpoints.clear();
-}
-
-void TubeFactory::init()
-{
 }
 
 void TubeFactory::start()
@@ -88,11 +83,13 @@ void TubeFactory::createNewOnes()
 void TubeFactory::update()
 {
     for (auto tube : tubes)
+    {
         tube->update();
-    
+    }
     for (auto checkpoint : checkpoints)
-        checkpoint->update(status.velocity);
-    
+    {
+        checkpoint->update();
+    }
     destroyInactive();
     createNewOnes();
 }

@@ -18,7 +18,6 @@ private:
     void destroyInactive();
     void createNewOnes();
 public:
-    void init();
     void start();
     TubeFactory();
     ~TubeFactory();

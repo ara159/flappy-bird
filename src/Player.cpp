@@ -4,21 +4,6 @@
 
 Player::Player() : MyGameObject()
 {
-    init();
-}
-
-Player::~Player() {
-    free(spPlayer);
-    free(soundBuffer);
-    free(sound);
-
-    for (int i = 0; i < 3; i++)
-    {
-        free(txPlayer[i]);
-    }
-}
-
-void Player::init() {
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
 
@@ -53,6 +38,17 @@ void Player::init() {
     soundBuffer = new SoundBuffer();
     soundBuffer->loadFromFile("flappy-birdy-audios.wav");
     sound = new Sound(*soundBuffer);
+}
+
+Player::~Player() {
+    free(spPlayer);
+    free(soundBuffer);
+    free(sound);
+
+    for (int i = 0; i < 3; i++)
+    {
+        free(txPlayer[i]);
+    }
 }
 
 void Player::setAnimation(bool animation)

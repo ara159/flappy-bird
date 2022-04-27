@@ -10,7 +10,7 @@ class Ground : public MyGameObject
 private:
     Texture* txGround;
     Sprite* spGround;
-    void init();
+    bool animation;
 public:
     Ground();
     ~Ground();
@@ -18,6 +18,7 @@ public:
     void draw(RenderWindow * window);
     void start();
     FloatRect getGlobalBounds();
+    void setAnimation(bool);
 };
 
 #endif

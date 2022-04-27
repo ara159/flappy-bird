@@ -11,7 +11,6 @@ struct GameStats
 {
     bool paused = false;
     bool gameOver = false;
-    int velocity = 0;
     FBScreens toScreen = NONE;
 };
 

@@ -2,10 +2,6 @@
 
 Ground::Ground() : MyGameObject()
 {
-    init();
-}
-
-void Ground::init() {
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
 
@@ -17,6 +13,8 @@ void Ground::init() {
     spGround->setScale(sf::Vector2f(scale, scale));
     spGround->setPosition(0, 228 * scale);
     int p = spGround->getGlobalBounds().height;
+
+    animation = true;
 }
 
 Ground::~Ground()
@@ -27,16 +25,25 @@ Ground::~Ground()
 
 void Ground::update()
 {
-    IntRect last = spGround->getTextureRect();
-    spGround->setTextureRect(IntRect(last.left + status.velocity, 0, last.width, last.height));
+    
 }
 
 void Ground::draw(RenderWindow* window)
 {
+    if (animation)
+    {
+        IntRect last = spGround->getTextureRect();
+        spGround->setTextureRect(IntRect(last.left + 1, 0, last.width, last.height));
+    }
     window->draw(*spGround);
 }
 
 FloatRect Ground::getGlobalBounds()
 {
     return spGround->getGlobalBounds();
+}
+
+void Ground::setAnimation(bool animation)
+{
+    this->animation = animation;
 }

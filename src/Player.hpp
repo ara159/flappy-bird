@@ -26,7 +26,6 @@ private:
     float impulse = -3;
     Vector2i initialOffset;
     bool animation = true;
-    void init();
 public:
     Player();
     ~Player();

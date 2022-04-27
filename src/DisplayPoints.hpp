@@ -5,7 +5,6 @@
 class DisplayPoints : public MyGameObject
 {
 private:
-    void init();
     int points;
     Texture* txNumbers[10];
 public:

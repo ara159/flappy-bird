@@ -1,10 +1,6 @@
 #include "Background.hpp"
 
 Background::Background() : MyGameObject() {
-    init();
-}
-
-void Background::init() {
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
     
@@ -20,10 +16,13 @@ void Background::init() {
     spBackground = new Sprite();
     spBackground->setScale(sf::Vector2f(scale, scale));
     spBackground->setPosition(0, 0);
+
+    animation = true;
 }
 
 void Background::start() {
     spBackground->setTexture(*txBackground[rand() % 2]);
+    animation = true;
 }
 
 Background::~Background() {
@@ -36,14 +35,21 @@ Background::~Background() {
 
 void Background::update()
 {
-    if (--cooldown > 0 || status.velocity == 0) return;
-    cooldown = 6 / scale;
 
-    auto last = spBackground->getTextureRect();
-    spBackground->setTextureRect(IntRect(last.left + 1, 0, 512 * scale, 432 * scale));
 }
 
 void Background::draw(RenderWindow* window)
 {
+    if (animation && cooldown-- == 0)
+    {
+        auto last = spBackground->getTextureRect();
+        cooldown = 6 / scale;
+        spBackground->setTextureRect(IntRect(last.left + 1, 0, 512 * scale, 432 * scale));
+    }
     window->draw(*spBackground);
+}
+
+void Background::setAnimation(bool animation)
+{
+    this->animation = animation;
 }

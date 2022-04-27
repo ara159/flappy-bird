@@ -11,10 +11,6 @@ private:
     Texture* txTube;
     Sprite* spTube;
     bool active = true;
-    bool upsidedown = false;
-    int spaceBetween = 0;
-    int offset = 0;
-    void init();
 public:
     Tube(bool upsidedown, int spaceBetween, int offset);
     ~Tube();

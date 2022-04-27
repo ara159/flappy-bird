@@ -2,24 +2,22 @@
 
 Checkpoint::Checkpoint()
 {
-    init();
-}
-
-Checkpoint::~Checkpoint()
-{
-    init();
-}
-
-void Checkpoint::init()
-{
     collRect = new RectangleShape(Vector2f(1, screenSize.y));
     collRect->setPosition(screenSize.x + 100 * scale, 0);
 }
 
-void Checkpoint::update(float velocity)
+Checkpoint::~Checkpoint()
 {
-    if (!active) return;
-    collRect->move(-velocity * scale, 0);
+    free(collRect);
+}
+
+void Checkpoint::update()
+{
+    if (!active)
+        return;
+    
+    collRect->move(- 1 * scale, 0);
+    
     if (collRect->getPosition().x < -100)
         active = false;
 }

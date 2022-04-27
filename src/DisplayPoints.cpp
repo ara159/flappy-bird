@@ -2,19 +2,6 @@
 
 DisplayPoints::DisplayPoints() : MyGameObject()
 {
-    init();
-}
-
-DisplayPoints::~DisplayPoints()
-{
-    for (int i = 0; i < 10; i++)
-    {
-        free(txNumbers[i]);
-    }
-}
-
-void DisplayPoints::init()
-{
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
 
@@ -35,6 +22,14 @@ void DisplayPoints::init()
     {
         txNumbers[i] = new Texture();
         txNumbers[i]->loadFromImage(tileset, positions[i]); 
+    }
+}
+
+DisplayPoints::~DisplayPoints()
+{
+    for (int i = 0; i < 10; i++)
+    {
+        free(txNumbers[i]);
     }
 }
 

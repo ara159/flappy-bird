@@ -3,15 +3,6 @@
 
 PauseButton::PauseButton() : MyGameObject()
 {
-    init();
-}
-
-PauseButton::~PauseButton() {
-    free(txPauseButton);
-    free(spPauseButton);
-}
-
-void PauseButton::init() {
     Image tileset = Image();
     tileset.loadFromFile("flappy-birdy-sprites.png");
     
@@ -24,6 +15,11 @@ void PauseButton::init() {
     spPauseButton->setScale(Vector2f(scale, scale));
     
     paused = false;
+}
+
+PauseButton::~PauseButton() {
+    free(txPauseButton);
+    free(spPauseButton);
 }
 
 void PauseButton::draw(RenderWindow * window)

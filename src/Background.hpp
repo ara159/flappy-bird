@@ -11,13 +11,14 @@ private:
     Texture* txBackground[2];
     Sprite* spBackground;
     int cooldown = 0;
-    void init();
+    bool animation;
 public:
     Background();
     ~Background();
     void start();
     void update();
     void draw(RenderWindow * window);
+    void setAnimation(bool);
 };
 
 #endif
